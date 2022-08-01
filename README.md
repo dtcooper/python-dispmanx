@@ -7,6 +7,6 @@ following,
 git clone https://github.com/dtcooper/python-dispmanx.git
 cd python-dispmanx
 
-# A quick demom using pygame
+# A quick demo using pygame
 python test.py
 ```
