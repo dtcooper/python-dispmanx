@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "dispmanx"
+version = "0.0.1-dev"
+description = "Libraty providing a buffer interface to your Raspberry Pi's GPU layer. Usable with pygame, PIL and other graphics libraries."
+authors = ["David Cooper <david@dtcooper.com>"]
+license = "MIT"
+homepage = "https://github.com/dtcooper/python-dispmanx"
+repository = "https://github.com/dtcooper/python-dispmanx"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: pygame",
+    "Topic :: Multimedia :: Graphics",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10"
+]
+readme = "README.md"
+include = ["LICENSE"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = {version = "^1.23.1", extras = ["numpy"]}
+
+[tool.poetry.dev-dependencies]
+Pillow = "^9.2.0"
+pygame = "^2.1.2"
+black = "^22.6.0"
+isort = "^5.10.1"
+flake8 = "^5.0.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+preview = true
+
+[tool.isort]
+multi_line_output = 3
+lines_after_imports = 2
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 120
+force_sort_within_sections = true
+sections = ['FUTURE', 'STDLIB', 'THIRDPARTY', 'GRAPHICSTHIRDPARTY', 'FIRSTPARTY', 'LOCALFOLDER']
+known_graphicsthirdparty = ['pygame', 'PIL']

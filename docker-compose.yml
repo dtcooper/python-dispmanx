@@ -1,0 +1,8 @@
+services:
+  dispmanx:
+    build:
+      context: .
+    volumes:
+      - .:/app
+    devices:
+      - /dev/vchiq:/dev/vchiq

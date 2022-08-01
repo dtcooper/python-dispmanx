@@ -1,12 +1,12 @@
 import os
 import random
 
-os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"  # noqa
 
-import pygame
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
-from dispmanx import Dispmanx
+import pygame  # noqa: E402
 
+from dispmanx import Dispmanx  # noqa: E402
 
 
 def random_color():
