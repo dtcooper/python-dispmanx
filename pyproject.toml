@@ -1,21 +1,22 @@
 [tool.poetry]
-name = "dispmanx"
-version = "0.0.1-dev"
-description = "Libraty providing a buffer interface to your Raspberry Pi's GPU layer. Usable with pygame, PIL and other graphics libraries."
 authors = ["David Cooper <david@dtcooper.com>"]
-license = "MIT"
+description = "Libraty providing a buffer interface to your Raspberry Pi's GPU layer. Usable with pygame, PIL and other graphics libraries."
 homepage = "https://github.com/dtcooper/python-dispmanx"
+include = ["LICENSE"]
+license = "MIT"
+name = "dispmanx"
+readme = "README.md"
 repository = "https://github.com/dtcooper/python-dispmanx"
+version = "0.0.1-dev"
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Software Development :: Libraries :: pygame",
-    "Topic :: Multimedia :: Graphics",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10"
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Libraries :: pygame",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-readme = "README.md"
-include = ["LICENSE"]
+
 
 [tool.poetry.dependencies]
 python = "^3.9"
