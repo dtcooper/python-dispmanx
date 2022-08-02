@@ -1,4 +1,11 @@
-# Python Wrapper for the Raspberry Pi's DispmanX API
+<h1 align="center">
+  <a href="https://dtcooper.github.io/python-dispmanx/">DispmanX Bindings for Python</a>
+</h1>
+
+<p align="center">
+  <a href="#">Documentation</a> |
+  <a href="https://pypi.org/project/dispmanx/">Python Package Index</a>
+</p>
 
 This is a Python library for interacting with the Raspberry Pi's DispmanX video
 API. Some use cases for this are,
@@ -17,11 +24,11 @@ Documentation forthcoming. For now, test it out on your Pi by running the
 following,
 
 ```bash
-# Download dispmanx, optionally using numpy: pip install dispmanx[numpy]
-pip install dispmanx
+# Install dispmanx and pygame (numpy optional)
+pip install pygame dispmanx[numpy]
 
 # Download and run test.py
-wget https://raw.githubusercontent.com/dtcooper/python-dispmanx/main/test.py
+wget https://raw.githubusercontent.com/dtcooper/python-dispmanx/main/examples/test.py
 python test.py
 ```
 
@@ -35,6 +42,7 @@ python test.py
 - [ ] Support custom dimensions and offsets – API supports it, but requires weird
     multiples of 16 or 32, [as documented here](picamera-overlay-docs). This
     requires testing, because anecdotally it seems to work with smaller multiples.
+- [ ] Test run over SSH onto my home pi
 
 
 [ctypes]: https://docs.python.org/3/library/ctypes.html

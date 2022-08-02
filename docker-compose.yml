@@ -1,5 +1,6 @@
 services:
   dispmanx:
+    image: ghcr.io/dtcooper/dispmanx:latest
     build:
       context: .
     volumes:

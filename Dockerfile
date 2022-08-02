@@ -13,13 +13,15 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         libraspberrypi0 \
         # For pygame on armhf, not strictly required but used in demos
-        libsdl2-dev \
-        libsdl2-image-dev \
-        libsdl2-mixer-dev \
-        libsdl2-ttf-dev \
-        libfreetype6-dev \
-        libportmidi-dev \
-        libjpeg-dev \
+        $([ "$(dpkg --print-architecture)" = "armhf" ] && echo \
+            libfreetype6-dev \
+            libjpeg-dev \
+            libportmidi-dev \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+        ) \
     && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml poetry.lock /app/

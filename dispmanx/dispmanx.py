@@ -17,10 +17,7 @@ from . import bcm_host as bcm
 
 logger = logging.getLogger("dispmanx")
 
-if HAVE_NUMPY:
-    BufferType = numpy.typing.NDArray
-else:
-    BufferType = ct.Array[ct.c_char]
+
 PixelFormat = Literal["RGBA", "RGB"]
 
 
@@ -44,7 +41,6 @@ class Display(NamedTuple):
 
 
 class DispmanX:
-    _buffer: BufferType
     _display_handle: int
     _display: Display
     _layer: int
@@ -79,6 +75,13 @@ class DispmanX:
         else:
             raise DispmanXError(f"Invalid pixel format: {format}")
 
+        if buffer_type not in ("numpy", "ctypes", "auto"):
+            raise DispmanXError(f"Invalid buffer type: {buffer_type}")
+        elif buffer_type == "numpy" and not HAVE_NUMPY:
+            raise DispmanXError("numpy buffer type requested, but numpy not found!")
+        elif buffer_type == "auto":
+            buffer_type = "numpy" if HAVE_NUMPY else "ctypes"
+
         device_id = display.device_id if isinstance(display, Display) else display
 
         # Select a display (first one by default)
@@ -106,7 +109,7 @@ class DispmanX:
         self._display_handle = handle
 
         buffer_size = self._display.size.width * self._display.size.height * self._pixel_width
-        if HAVE_NUMPY:
+        if buffer_type == "numpy":
             array_shape = (self._display.size.width, self._display.size.height, self._pixel_width)
             self._buffer = numpy.zeros(shape=array_shape, dtype=numpy.uint8)
         else:
@@ -133,7 +136,7 @@ class DispmanX:
         return self._display.size.height
 
     @property
-    def buffer(self) -> BufferType:
+    def buffer(self):
         return self._buffer
 
     @property
