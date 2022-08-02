@@ -18,7 +18,7 @@ for display in DispmanX.list_displays():
     print(f" * #{display.device_id} ({display.name}) - {display.size.width}x{display.size.height}")
 print()
 
-dispmanx = DispmanX()
+dispmanx = DispmanX(layer=1000, format="RGBA")
 print(
     f"Using display #{dispmanx.display.device_id} - {dispmanx.size.width}x{dispmanx.size.height} with"
     f" {dispmanx.format} format"

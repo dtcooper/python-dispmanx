@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 import ctypes as ct
 import logging
-from typing import ClassVar, Generator, Literal, NamedTuple
+from typing import ClassVar, Generator, Literal, NamedTuple, Union
 
 
 try:
@@ -16,6 +16,16 @@ from . import bcm_host as bcm
 
 
 logger = logging.getLogger("dispmanx")
+
+if HAVE_NUMPY:
+    BufferType = numpy.typing.NDArray
+else:
+    BufferType = ct.Array[ct.c_char]
+PixelFormat = Literal["RGBA", "RGB"]
+
+
+class DispmanXRuntimeError(RuntimeError):
+    pass
 
 
 class DispmanXError(Exception):
@@ -34,6 +44,7 @@ class Display(NamedTuple):
 
 
 class DispmanX:
+    _buffer: BufferType
     _display_handle: int
     _display: Display
     _layer: int
@@ -51,9 +62,10 @@ class DispmanX:
     def __init__(
         self,
         layer: int = 0,
-        device_id: int = None,
-        format: Literal["RGBA", "RGB"] = "RGBA",
-    ):
+        display: Union[int, Display] = None,
+        format: PixelFormat = "RGBA",
+        buffer_type: Literal["numpy", "ctypes", "auto"] = "auto",
+    ) -> None:
         self._bcm_host_init()
         self._format = format
         self._layer = layer
@@ -66,6 +78,8 @@ class DispmanX:
             self._pixel_width = 3
         else:
             raise DispmanXError(f"Invalid pixel format: {format}")
+
+        device_id = display.device_id if isinstance(display, Display) else display
 
         # Select a display (first one by default)
         if device_id is None:
@@ -87,16 +101,16 @@ class DispmanX:
 
         handle = bcm.vc_dispmanx_display_open(self._display.device_id)
         if handle == 0:
-            raise DispmanXError(f"Error opening device ID #{self._display_id}")
+            raise DispmanXRuntimeError(f"Error opening device ID #{self._display.device_id}")
         logger.debug(f"Got display handle: {handle}")
         self._display_handle = handle
 
         buffer_size = self._display.size.width * self._display.size.height * self._pixel_width
         if HAVE_NUMPY:
             array_shape = (self._display.size.width, self._display.size.height, self._pixel_width)
-            self._buffer: numpy.typing.ArrayLike = numpy.zeros(shape=array_shape, dtype=numpy.uint8)
+            self._buffer = numpy.zeros(shape=array_shape, dtype=numpy.uint8)
         else:
-            self._buffer: ct.c_char = ct.create_string_buffer(buffer_size)
+            self._buffer = ct.create_string_buffer(buffer_size)
         logger.debug(f"Allocated buffer of size {buffer_size} bytes")
 
         self._create_video_resource_handle()
@@ -111,11 +125,19 @@ class DispmanX:
         return self._display.size
 
     @property
-    def buffer(self):
+    def width(self) -> int:
+        return self._display.size.width
+
+    @property
+    def height(self) -> int:
+        return self._display.size.height
+
+    @property
+    def buffer(self) -> BufferType:
         return self._buffer
 
     @property
-    def format(self):
+    def format(self) -> PixelFormat:
         return self._format
 
     def _create_video_resource_handle(self) -> None:
@@ -127,7 +149,7 @@ class DispmanX:
             ct.byref(unused),
         )
         if handle == 0:
-            raise DispmanXError("Error creating image resource")
+            raise DispmanXRuntimeError("Error creating image resource")
 
         self._video_resource_handle = handle
         logger.debug(f"Created video resource handle: {handle}")
@@ -151,7 +173,7 @@ class DispmanX:
                 bcm.DISPMANX_NO_ROTATE,
             )
             if self._surface_element_handle == 0:
-                raise DispmanXError("Couldn't create surface element")
+                raise DispmanXRuntimeError("Couldn't create surface element")
             logger.debug(f"Got surface element handle: {self._surface_element_handle}")
 
     def update(self) -> None:
@@ -160,15 +182,17 @@ class DispmanX:
         else:
             buffer = ct.byref(self._buffer)
 
-        response = bcm.vc_dispmanx_resource_write_data(
-            self._video_resource_handle,
-            self._image_type,
-            self.display.size.width * self._pixel_width,
-            buffer,
-            ct.byref(self._dest_rect),
-        )
-        if response != 0:
-            raise DispmanXError("Error writing buffer to video memory")
+        if (
+            bcm.vc_dispmanx_resource_write_data(
+                self._video_resource_handle,
+                self._image_type,
+                self.display.size.width * self._pixel_width,
+                buffer,
+                ct.byref(self._dest_rect),
+            )
+            != 0
+        ):
+            raise DispmanXRuntimeError("Error writing buffer to video memory")
 
         with self._start_and_submit_update():
             pass
@@ -178,13 +202,12 @@ class DispmanX:
         update_handle = bcm.vc_dispmanx_update_start(0)
 
         if update_handle == bcm.DISPMANX_NO_HANDLE:
-            raise DispmanXError("Couldn't get update handle")
+            raise DispmanXRuntimeError("Couldn't get update handle")
 
         yield update_handle
 
-        response = bcm.vc_dispmanx_update_submit_sync(update_handle)
-        if response != 0:
-            raise DispmanXError("Error submitting update")
+        if bcm.vc_dispmanx_update_submit_sync(update_handle) != 0:
+            raise DispmanXRuntimeError("Error submitting update")
 
     @classmethod
     def list_displays(cls) -> list[Display]:
@@ -192,7 +215,7 @@ class DispmanX:
         devices = bcm.TV_ATTACHED_DEVICES_T()
 
         if bcm.vc_tv_get_attached_devices(ct.byref(devices)) != 0:
-            raise DispmanXError("Error getting attached devices")
+            raise DispmanXRuntimeError("Error getting attached devices")
 
         response = []
 
@@ -211,7 +234,7 @@ class DispmanX:
         return displays[0]
 
     @classmethod
-    def _get_display_size(cls, display_id) -> tuple[int, int]:
+    def _get_display_size(cls, display_id) -> Size:
         cls._bcm_host_init()
         width, height = ct.c_uint32(), ct.c_uint32()
         if bcm.graphics_get_display_size(display_id, ct.byref(width), ct.byref(height)) < 0:
