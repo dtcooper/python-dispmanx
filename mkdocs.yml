@@ -26,6 +26,8 @@ markdown_extensions:
       base_path: [ "./examples" ]
       check_paths: true
   - pymdownx.superfences
+  - toc:
+      permalink: True
 extra:
   version:
     provider: mike
@@ -34,19 +36,18 @@ extra:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/dtcooper
       name: '@dtcooper on Twitter'
-
 theme:
   name: material
   favicon: assets/favicon.svg
   features:
+    - navigation.expand
     - navigation.instant
-    - navigation.tracking
+    - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.expand
-    - search.suggest
     - search.highlight
+    - search.suggest
+    - toc.integrate
   icon:
     logo: fontawesome/brands/raspberry-pi
     repo: fontawesome/brands/github
