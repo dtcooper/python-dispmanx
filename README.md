@@ -1,6 +1,15 @@
 # Python Wrapper for the Raspberry Pi's DispmanX API
 
-This is a Python library for interacting with a buffer using the DispmanX.
+This is a Python library for interacting with the Raspberry Pi's DispmanX video
+API. Some use cases for this are,
+
+  * Directly writing to the lowlevel graphics layer of your Pi with relatively
+    high performance (for Python). There's no need to install X11.
+  * Small [pygame][pygame] or [Pillow][pillow]-based applications can overlayed
+    onto the screen, with full support for transparency.
+
+This library uses [ctypes][ctypes] to directly interact with your Raspberry Pi's
+`bcm_host.so` library.
 
 ## Usage
 
@@ -28,8 +37,11 @@ python test.py
     requires testing, because anecdotally it seems to work with smaller multiples.
 
 
+[ctypes]: https://docs.python.org/3/library/ctypes.html
 [mkdocs-material]: https://squidfunk.github.io/mkdocs-material/
 [mkdocs]: https://www.mkdocs.org/
 [mkdocstrings]: https://mkdocstrings.github.io/
 [picamera-overlay-docs]: https://picamera.readthedocs.io/en/release-1.13/api_renderers.html#picamera.PiOverlayRenderer
+[pillow]: https://pillow.readthedocs.io/
+[pygame]: https://www.pygame.org/docs/
 [pypi]: https://pypi.org/
