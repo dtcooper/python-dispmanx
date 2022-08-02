@@ -12,7 +12,7 @@ API. Some use cases for this are,
 
   * Directly writing to the lowlevel graphics layer of your Pi with relatively
     high performance (for Python). There's no need to install X11.
-  * Small [pygame][pygame] or [Pillow][pillow]-based applications can overlayed
+  * Small [pygame][pygame] or [Pillow][pillow]-based applications can be overlayed
     onto the screen, with full support for transparency.
 
 This library uses [ctypes][ctypes] to directly interact with your Raspberry Pi's
