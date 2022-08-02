@@ -7,7 +7,7 @@ license = "MIT"
 name = "dispmanx"
 readme = "README.md"
 repository = "https://github.com/dtcooper/python-dispmanx"
-version = "0.0.1-dev"
+version = "0.0.1-dev2"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3.10",
@@ -20,14 +20,17 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-numpy = {version = "^1.23.1", extras = ["numpy"]}
+numpy = {version = "^1.23.1", optional = true}
 
 [tool.poetry.dev-dependencies]
+black = "^22.6.0"
+flake8 = "^5.0.3"
+isort = "^5.10.1"
 Pillow = "^9.2.0"
 pygame = "^2.1.2"
-black = "^22.6.0"
-isort = "^5.10.1"
-flake8 = "^5.0.2"
+
+[tool.poetry.extras]
+numpy = ["numpy"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

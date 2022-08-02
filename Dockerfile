@@ -12,10 +12,10 @@ ENV PATH="/root/.poetry/bin:${PATH}"
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         libraspberrypi0 \
-    && rm -rf /var/lib/apt/lists/* /tmp/omxplayer.deb
+    && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml poetry.lock /app/
 WORKDIR /app
-RUN poetry install
+RUN poetry install --extras numpy
 
 COPY . /app
