@@ -18,7 +18,7 @@ from . import bcm_host as bcm
 logger = logging.getLogger("dispmanx")
 
 
-class DispmanxError(Exception):
+class DispmanXError(Exception):
     pass
 
 
@@ -33,7 +33,7 @@ class Display(NamedTuple):
     size: Size
 
 
-class Dispmanx:
+class DispmanX:
     _display_handle: int
     _display: Display
     _layer: int
@@ -65,7 +65,7 @@ class Dispmanx:
             self._image_type = bcm.VC_IMAGE_RGB888
             self._pixel_width = 3
         else:
-            raise DispmanxError(f"Invalid pixel format: {format}")
+            raise DispmanXError(f"Invalid pixel format: {format}")
 
         # Select a display (first one by default)
         if device_id is None:
@@ -78,7 +78,7 @@ class Dispmanx:
                     self._display = display
                     break
             else:
-                raise DispmanxError(f"No display with device ID #{device_id} found!")
+                raise DispmanXError(f"No display with device ID #{device_id} found!")
 
         logger.debug(
             f"Using device ID #{self._display.device_id} with resolution"
@@ -87,7 +87,7 @@ class Dispmanx:
 
         handle = bcm.vc_dispmanx_display_open(self._display.device_id)
         if handle == 0:
-            raise DispmanxError(f"Error opening device ID #{self._display_id}")
+            raise DispmanXError(f"Error opening device ID #{self._display_id}")
         logger.debug(f"Got display handle: {handle}")
         self._display_handle = handle
 
@@ -127,7 +127,7 @@ class Dispmanx:
             ct.byref(unused),
         )
         if handle == 0:
-            raise DispmanxError("Error creating image resource")
+            raise DispmanXError("Error creating image resource")
 
         self._video_resource_handle = handle
         logger.debug(f"Created video resource handle: {handle}")
@@ -151,7 +151,7 @@ class Dispmanx:
                 bcm.DISPMANX_NO_ROTATE,
             )
             if self._surface_element_handle == 0:
-                raise DispmanxError("Couldn't create surface element")
+                raise DispmanXError("Couldn't create surface element")
             logger.debug(f"Got surface element handle: {self._surface_element_handle}")
 
     def update(self) -> None:
@@ -168,7 +168,7 @@ class Dispmanx:
             ct.byref(self._dest_rect),
         )
         if response != 0:
-            raise DispmanxError("Error writing buffer to video memory")
+            raise DispmanXError("Error writing buffer to video memory")
 
         with self._start_and_submit_update():
             pass
@@ -178,13 +178,13 @@ class Dispmanx:
         update_handle = bcm.vc_dispmanx_update_start(0)
 
         if update_handle == bcm.DISPMANX_NO_HANDLE:
-            raise DispmanxError("Couldn't get update handle")
+            raise DispmanXError("Couldn't get update handle")
 
         yield update_handle
 
         response = bcm.vc_dispmanx_update_submit_sync(update_handle)
         if response != 0:
-            raise DispmanxError("Error submitting update")
+            raise DispmanXError("Error submitting update")
 
     @classmethod
     def list_displays(cls) -> list[Display]:
@@ -192,7 +192,7 @@ class Dispmanx:
         devices = bcm.TV_ATTACHED_DEVICES_T()
 
         if bcm.vc_tv_get_attached_devices(ct.byref(devices)) != 0:
-            raise DispmanxError("Error getting attached devices")
+            raise DispmanXError("Error getting attached devices")
 
         response = []
 
@@ -207,7 +207,7 @@ class Dispmanx:
     def get_default_display(cls) -> Display:
         displays = cls.list_displays()
         if len(displays) == 0:
-            raise DispmanxError("No displays found!")
+            raise DispmanXError("No displays found!")
         return displays[0]
 
     @classmethod
@@ -215,6 +215,6 @@ class Dispmanx:
         cls._bcm_host_init()
         width, height = ct.c_uint32(), ct.c_uint32()
         if bcm.graphics_get_display_size(display_id, ct.byref(width), ct.byref(height)) < 0:
-            raise DispmanxError(f"Error getting display #{display_id} size")
+            raise DispmanXError(f"Error getting display #{display_id} size")
 
         return Size(width.value, height.value)

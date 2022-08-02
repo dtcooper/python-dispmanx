@@ -6,7 +6,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import pygame  # noqa: E402
 
-from dispmanx import Dispmanx  # noqa: E402
+from dispmanx import DispmanX  # noqa: E402
 
 
 def random_color():
@@ -14,11 +14,11 @@ def random_color():
 
 
 print("Found displays:")
-for display in Dispmanx.list_displays():
+for display in DispmanX.list_displays():
     print(f" * #{display.device_id} ({display.name}) - {display.size.width}x{display.size.height}")
 print()
 
-dispmanx = Dispmanx()
+dispmanx = DispmanX()
 print(
     f"Using display #{dispmanx.display.device_id} - {dispmanx.size.width}x{dispmanx.size.height} with"
     f" {dispmanx.format} format"

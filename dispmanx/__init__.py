@@ -1,5 +1,5 @@
-from .dispmanx import Dispmanx
+from .dispmanx import DispmanX
 
 
-__version__ = "0.0.1-dev3"
-__all__ = ["Dispmanx", "__version__"]
+__version__ = "0.0.1-dev4"
+__all__ = ["DispmanX", "__version__"]
