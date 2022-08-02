@@ -6,8 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_CREATE=false
 
-RUN curl -sSL https://install.python-poetry.org/ | python -
-ENV PATH="/root/.local/bin:${PATH}"
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+ENV PATH="/root/.poetry/bin:${PATH}"
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
