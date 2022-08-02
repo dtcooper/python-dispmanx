@@ -1,7 +1,7 @@
 site_name: Python DispmanX
 site_url: https://dtcooper.github.io/python-dispmanx/
 repo_url: https://github.com/dtcooper/python-dispmanx
-repo_name: python-dispmanx
+repo_name: dtcooper/python-dispmanx
 edit_uri: ""
 copyright: Copyright &copy; 2022 David Cooper
 nav:
