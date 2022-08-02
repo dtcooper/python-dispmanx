@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <a href="#">Documentation</a> |
+  <a href="https://dtcooper.github.io/python-dispmanx/">Documentation</a> |
   <a href="https://pypi.org/project/dispmanx/">Python Package Index</a>
 </p>
 
@@ -20,17 +20,7 @@ This library uses [ctypes][ctypes] to directly interact with your Raspberry Pi's
 
 ## Usage
 
-Documentation forthcoming. For now, test it out on your Pi by running the
-following,
-
-```bash
-# Install dispmanx and pygame (numpy optional)
-pip install pygame dispmanx[numpy]
-
-# Download and run test.py
-wget https://raw.githubusercontent.com/dtcooper/python-dispmanx/main/examples/test.py
-python test.py
-```
+See the [Quickstart section in the docs][quickstart].
 
 ## TODO List
 
@@ -53,3 +43,4 @@ python test.py
 [pillow]: https://pillow.readthedocs.io/
 [pygame]: https://www.pygame.org/docs/
 [pypi]: https://pypi.org/
+[quickstart]: https://dtcooper.github.io/python-dispmanx/#quickstart
