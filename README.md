@@ -8,16 +8,17 @@ Documentation forthcoming. For now, test it out on your Pi by running the
 following,
 
 ```bash
-git clone https://github.com/dtcooper/python-dispmanx.git
-cd python-dispmanx
+# Download dispmanx, optionally using numpy: pip install dispmanx[numpy]
+pip install dispmanx
 
-# A quick demo using pygame
+# Download and run test.py
+wget https://raw.githubusercontent.com/dtcooper/python-dispmanx/main/test.py
 python test.py
 ```
 
 ## TODO List
 
-- [ ] Publish package to [PyPI][pypi]
+- [x] Publish package to [PyPI][pypi]
 - [ ] Add API docs using [MkDocs][mkdocs], [Material for MkDocs][mkdocs-material],
     and [mkdocstrings][mkdocstrings]
 - [ ] Allow multiple layers

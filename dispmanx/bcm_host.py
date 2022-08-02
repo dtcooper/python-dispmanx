@@ -6,7 +6,10 @@ import sys
 
 _lib_path = find_library("bcm_host")
 if _lib_path is None:
-    print("Unable to locate bcm_host library. Are you sure the libraspberrypi-bin package is installed?")
+    print(
+        "Unable to locate bcm_host library. Are you sure the libraspberrypi0 package is installed? Try running:\n"
+        "    $ sudo apt-get install -y --no-install-recommends libraspberrypi0"
+    )
     sys.exit(1)
 
 
