@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	docker compose build dispmanx
+	docker compose build --pull dispmanx
 
 .PHONY: shell
 shell:

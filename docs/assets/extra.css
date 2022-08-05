@@ -1,3 +1,19 @@
+/* Minor tweaks to mkdocs-material CSS */
+
+.md-source {
+  font-size: 0.6rem
+}
+
 * {
   font-variant-ligatures: none;
+}
+
+.doc-object-name, .doc-class-name {
+  font-family: var(--md-code-font);
+  font-weight: bold;
+}
+
+div.doc-contents {
+  padding-left: 20px;
+  border-left: .05rem solid var(--md-typeset-table-color);
 }

@@ -4,27 +4,58 @@ repo_url: https://github.com/dtcooper/python-dispmanx
 repo_name: dtcooper/python-dispmanx
 edit_uri: ""
 copyright: Copyright &copy; 2022 David Cooper
+strict: true
 nav:
-  - Welcome: index.md
+  - index.md
+  - recipes.md
+  - api.md
+  - info.md
+  - license.md
 extra_css:
   - assets/extra.css
 plugins:
   - search
+  - autorefs
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          import:
+            - https://docs.python.org/3/objects.inv
+            - https://docs.scipy.org/doc/numpy/objects.inv
+          options:
+            docstring_section_style: table
+            docstring_style: google
+            merge_init_into_class: true
+            show_root_full_path: false
+            show_root_heading: true
+            show_source: false
+            show_signature_annotations: true
+            line_length: 100
 watch:
-  - "./examples"
+  - ./examples
+  - ./dispmanx
 markdown_extensions:
   - admonition
+  - def_list
+  - footnotes
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.superfences
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
+  - pymdownx.magiclink
   - pymdownx.snippets:
-      base_path: [ "./examples" ]
+      base_path: [ "./examples", "LICENSE" ]
       check_paths: true
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - toc:
-      permalink: True
+      permalink: "\u2190"
 extra:
   version:
     provider: mike
@@ -48,19 +79,23 @@ theme:
   icon:
     logo: fontawesome/brands/raspberry-pi
     repo: fontawesome/brands/github
-  # font:
-  #   text: Space Grotesk
-  #   code: Space Mono  # ligatures disabled in extra.css
+  font:
+    text: Space Grotesk
+    code: Space Mono  # ligatures disabled in extra.css
   palette:
-    - scheme: slate
+    -
+      scheme: slate
+      media: '(prefers-color-scheme: dark)'
       primary: pink
       accent: light blue
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-    - scheme: default
-      primary: dark blue
-      accent: pink
+    -
+      scheme: default
+      media: '(prefers-color-scheme: light)'
+      primary: deep orange
+      accent: blue
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode

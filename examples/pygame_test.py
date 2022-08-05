@@ -1,14 +1,15 @@
+from random import randint
 import pygame
 from dispmanx import DispmanX
 
+def random_color_with_alpha():
+    return tuple(randint(0, 0xFF) for _ in range(3)) + (randint(0x44, 0xFF),)
 
-colors = ('#fc49ab', '#5fe8ff', '#c07eec', '#fbbd23', '#ffee00', '#36d399')
 display = DispmanX(format="RGBA")
 surface = pygame.image.frombuffer(display.buffer, display.size, display.format)
 clock = pygame.time.Clock()
 
-for num, color in enumerate(colors, 1):
-    # Scale opacity from 0 to 0xFF
-    surface.fill(pygame.Color(f'{color}{num * 0xFF // len(colors):x}'))
+for _ in range(20):
+    surface.fill(random_color_with_alpha())
     display.update()
     clock.tick(2)

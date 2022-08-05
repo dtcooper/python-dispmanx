@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 import ctypes as ct
 import logging
-from typing import ClassVar, Generator, Literal, NamedTuple, Union
+from typing import ClassVar, Generator, Literal, NamedTuple, Union, Optional
 
 
 try:
@@ -18,14 +18,21 @@ from . import bcm_host as bcm
 logger = logging.getLogger("dispmanx")
 
 
-PixelFormat = Literal["RGBA", "RGB"]
-
-
 class DispmanXRuntimeError(RuntimeError):
+    """Raised when an **irrecoverable** error occurs with the underlying DispmanX library.
+
+    Under normal circumstances, you should destroy any [DispmanX][dispmanx.DispmanX]
+    objects you've instantiated when one of these occurs. Or, your program should
+    cleanly exit.
+    """
     pass
 
 
 class DispmanXError(Exception):
+    """Raised when a **recoverable** error occurs with the underlying DispmanX library.
+
+    Likely a programmer error. You can try whatever you were doing again and
+    correcting the offending behavior."""
     pass
 
 
@@ -35,6 +42,15 @@ class Size(NamedTuple):
 
 
 class Display(NamedTuple):
+    """
+    Not instantiated directly. Returned by various methods and classmethods on
+    the DispmanX object.
+
+    Attributes:
+        device_id int: Test
+        name str: Test
+        size Size: test
+    """
     device_id: int
     name: str
     size: Size
@@ -58,16 +74,44 @@ class DispmanX:
     def __init__(
         self,
         layer: int = 0,
-        display: Union[int, Display] = None,
-        format: PixelFormat = "RGBA",
+        display: Optional[Union[int, Display]] = None,
+        format: Literal["RGBA", "RGB", "ARGB", "RGBX"] = "RGBA",
         buffer_type: Literal["numpy", "ctypes", "auto"] = "auto",
-    ) -> None:
+    ):
+        """The DispmanX Class
+
+        You can use this class via the following,
+
+        ```python
+        from dispmanx import DispmanX
+
+        display = DispmanX()
+        ```
+
+        Arguments:
+            layer: What layer to choose. For example, the default layer of
+                Raspberry Pi OS Lite's terminal is `-127`. while omxplayer is
+                `0`.
+            display: Test
+            format: Test
+            buffer_type: Test
+
+        Attributes:
+            display Display: test
+            size Size: test
+        """
         self._bcm_host_init()
         self._format = format
         self._layer = layer
 
         if format == "RGBA":
             self._image_type = bcm.VC_IMAGE_RGBA32
+            self._pixel_width = 4
+        elif format == "ARGB":
+            self._image_type = bcm.VC_IMAGE_ARGB8888
+            self._pixel_width = 4
+        elif format == "RGBX":
+            self._image_type = bcm.VC_IMAGE_TF_RGBX32
             self._pixel_width = 4
         elif format == "RGB":
             self._image_type = bcm.VC_IMAGE_RGB888
@@ -110,7 +154,7 @@ class DispmanX:
 
         buffer_size = self._display.size.width * self._display.size.height * self._pixel_width
         if buffer_type == "numpy":
-            array_shape = (self._display.size.width, self._display.size.height, self._pixel_width)
+            array_shape = (self._display.size.height, self._display.size.width, self._pixel_width)
             self._buffer = numpy.zeros(shape=array_shape, dtype=numpy.uint8)
         else:
             self._buffer = ct.create_string_buffer(buffer_size)
@@ -140,7 +184,7 @@ class DispmanX:
         return self._buffer
 
     @property
-    def format(self) -> PixelFormat:
+    def format(self) -> Literal["RGBA", "RGB", "ARGB", "RGBX"]:
         return self._format
 
     def _create_video_resource_handle(self) -> None:
@@ -214,6 +258,21 @@ class DispmanX:
 
     @classmethod
     def list_displays(cls) -> list[Display]:
+        """Get a list of available [Displays][dispmanx.dispmanx.Display].
+
+        Example:
+            ```python
+            for display in DispmanX.list_display():
+                print(f"{display.device_id}: {display.name}")
+            ```
+
+        Returns:
+            List of available [Displays][dispmanx.dispmanx.Display].
+
+        Raises:
+            DispmanXRuntimeError: Raised if no devices are found, or there's an
+                error while getting the list of displays.
+        """
         cls._bcm_host_init()
         devices = bcm.TV_ATTACHED_DEVICES_T()
 
@@ -231,9 +290,16 @@ class DispmanX:
 
     @classmethod
     def get_default_display(cls) -> Display:
+        """Get the default [Display][dispmanx.dispmanx.Display].
+
+        This is both the first display returned by DispmanX layer, and the one
+        used when creating [DispmanX][dispmanx.DispmanX] objects by default.
+
+        Returns:
+            The default [Display][dispmanx.dispmanx.Display]."""
         displays = cls.list_displays()
         if len(displays) == 0:
-            raise DispmanXError("No displays found!")
+            raise DispmanXRuntimeError("No displays found!")
         return displays[0]
 
     @classmethod
@@ -241,6 +307,6 @@ class DispmanX:
         cls._bcm_host_init()
         width, height = ct.c_uint32(), ct.c_uint32()
         if bcm.graphics_get_display_size(display_id, ct.byref(width), ct.byref(height)) < 0:
-            raise DispmanXError(f"Error getting display #{display_id} size")
+            raise DispmanXRuntimeError(f"Error getting display #{display_id} size")
 
         return Size(width.value, height.value)

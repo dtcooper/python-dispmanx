@@ -1,31 +1,156 @@
+---
+title: Intro
+---
+
+!!! danger
+    Currently, **Python DispmanX is under active development**. This
+    documentation may not reflect the latest changes, or may include changes
+    that are not yet available on [PyPI][pypi]. _Beware!_
+
+    It's recommended you at least install the latest version from source,
+    described below in the [installation][installation] section below.
+
 # Welcome to Python DispmanX
 
-This is a Python library for interacting with the Raspberry Pi's DispmanX video
-API.
+Hello and welcome to the documentation for Python DispmanX, a pure Python[^1]
+package for interacting with the Raspberry Pi's DispmanX low-level video API. My
+hope is that you find it useful for creating all sorts of different apps,
+widgets, and graphical overlays for your Pi. I hope you has as much using it as
+I did writing it!
 
 ## Quickstart
 
-Install the [dispmanx][dispmanx-pypi] package using [pip][pip],
+Follow the steps to install the [DispmanX package][dispmanx-pypi] and run your
+first small program following the steps below.
 
-```bash
-pip install pygame dispmanx[numpy]
-```
+### Installation
 
-And try this sample program using [pygame][pygame],
+!!! note "Installation"
 
-```python title="test.py"
---8<-- "test.py"
-```
+    To install the [dispmanx package][dispmanx-pypi] from the
+    [Python Package Index (PyPI)][pypi], type the following at the command line,
+
+    === "With NumPy support"
+        ```bash
+        # Install dispmanx with optional (and recommended) NumPy support
+        pip install dispmanx[numpy]
+        ```
+    === "From source with NumPy"
+        ```bash
+        # Or install directly from the latest developmental sources with NumPy support
+        pip install git+https://github.com/dtcooper/python-dispmanx.git#egg=dispmanx[numpy]
+        ```
+    === "Without NumPy"
+        ```bash
+        # Install dispmanx without NumPy
+        pip install dispmanx
+        ```
+    === "From source without NumPy"
+        ```bash
+        # Or install directly from the latest developmental sources without NumPy
+        pip install git+https://github.com/dtcooper/python-dispmanx.git
+        ```
+
+### Code Examples
+
+!!! example "Examples"
+
+    Below are a few examples to get you started using [pygame][pygame],
+    [Pillow][pillow], or [Pycairo][pycairo].
+
+    === "pygame Example"
+        Install [pygame][pygame],
+
+        ```bash
+        pip install pygame
+        ```
+
+        Then try out this sample program,
+
+        ```python title="pygame_test.py"
+        --8<-- "pygame_test.py"
+        ```
+
+    === "Pillow example"
+        !!! tip "NumPy Required"
+            For this example to work correctly, ensure you've installed
+            [NumPy][numpy]. The easiest way to do that with [pip] is:
+            `#!bash pip install dispmanx[numpy]`
+
+        Install [Pillow][pillow],
+
+        ```bash
+        # NumPy is required for this example
+        pip install pillow
+        ```
+
+        Then try out this sample program,
+
+        ```python title="pillow_test.py"
+        --8<-- "pillow_test.py"
+        ```
+
+    === "Pycairo Example"
+        Install [Pycairo][pycairo],
+
+        ```bash
+        pip install pycairo
+        ```
+
+        Then try out this sample program,
+
+        ```python title="pycairo_test.py"
+        --8<-- "pycairo_test.py"
+        ```
 
 ## Use Cases
 
-Some use cases for this library are,
+You may be asking why this library, when you could just [pygame][pygame]. Here's
+some potential use cases.
 
-1. Directly writing to the lowlevel graphics layer of your Pi with relatively high
-   performance (for Python). There's no need to install X11.
-2. Small pygame or Pillow-based applications can be overlayed onto the screen, with
-   full support for transparency.
+* [pygame][pygame] using its underlying [SDL][sdl] library requires either X11
+    or fbcon drivers. X11 is great, but it requires a desktop environment on
+    your Pi. And fbcon appears to no longer supported by [pygame][pygame]
+    version 2. This library allows you to use familiar [pygame][pygame] idioms
+    with the Raspberry Pi's native DispmanX layer.
+* You may want to your program to have **transparent overlays.**
+    [pygame][pygame] and [SDL][sdl] do not support them by default. With this
+    package, you can do write something with just that![^2]
+* You may want to directly interact with [NumPy][numpy] arrays of RGB or RBGA
+    pixels with arbitrary imaging tool kits like [Pillow][pillow] or
+    [Cairo][pycairo].
+
+My use case is retro style CRT TV app, using the Pi-specific video player
+[omxplayer][omxplayer] with and semi-transparent overlays for menus, "channels,"
+and subtitles[^3].
+
+## What's Next?
+
+* Check out some [code recipes](recipes.md) that will show you how to use
+    DispmanX.
+
+* Head over to the [API documentation](api.md) and read about the
+    [DispmanX][dispmanx.DispmanX] class, the main entrypoint for this package.
+
+* Check out some [additional information](info.md) about this package.
+
+[^1]: I say "pure Python" however this package uses the Python's included
+    [ctypes][ctypes] library perform "foreign function calls" to `bcm_host.so`
+    &mdash; a C library included with Raspberry Pi OS to interface with the
+    DispmanX layer directly.
+[^2]: Fun fact, transparent overlays is the reason I wrote this package.
+[^3]: While [omxplayer][omxplayer] does supports subtitle, but they
+    [don't seem to be working on the Raspberry Pi 4B][omxplayer-subtitles-bug].
+    And anyways, I wanted to render custom subtitles anyway.
 
 [dispmanx-pypi]: https://pypi.org/project/dispmanx/
+[numpy]: https://numpy.org/doc/stable/
+[omxplayer-subtitles-bug]: https://github.com/popcornmix/omxplayer/issues/736
+[omxplayer]: https://github.com/popcornmix/omxplayer
+[pi-os]: https://www.raspberrypi.com/software/
+[pillow]: https://pillow.readthedocs.io/
 [pip]: https://pip.pypa.io/
+[pycairo]: https://pycairo.readthedocs.io/
 [pygame]: https://www.pygame.org/docs/
+[pypi]: https://pypi.org/
+[sdl]: https://www.libsdl.org/

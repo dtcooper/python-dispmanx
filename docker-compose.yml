@@ -1,9 +1,33 @@
+x-template:
+  &default-dispmanx
+  image: ghcr.io/dtcooper/dispmanx:latest
+  build:
+    context: .
+  volumes:
+    - .:/app
+
+x-template-devices:
+  &default-devices
+  <<: *default-dispmanx
+  devices:
+    - /dev/vchiq:/dev/vchiq
+
 services:
   dispmanx:
-    image: ghcr.io/dtcooper/dispmanx:latest
-    build:
-      context: .
-    volumes:
-      - .:/app
-    devices:
-      - /dev/vchiq:/dev/vchiq
+    <<: *default-devices
+    platform: linux/arm64
+
+  dispmanx-nodevices:
+    <<: *default-dispmanx
+    platform: linux/arm64
+    profiles: ["notdefault"]
+
+  dispmanx-32:
+    <<: *default-devices
+    platform: linux/arm/v7
+    profiles: ["notdefault"]
+
+  dispmanx-nodevices-32:
+    <<: *default-dispmanx
+    platform: linux/arm/v7
+    profiles: ["notdefault"]
