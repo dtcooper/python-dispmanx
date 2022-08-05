@@ -5,7 +5,7 @@ title: Intro
 !!! danger "A Word of Caution"
     Currently, **Python DispmanX is under active development**. This
     documentation may not reflect the latest changes, or may include changes
-    that are not yet available on [PyPI][pypi]. _Beware!_
+    that are not yet available on [PyPI][]. _Beware!_
 
     It's recommended that you at least install the latest version from
     source, described below in the [installation][installation] section.
@@ -13,26 +13,26 @@ title: Intro
 # Welcome to Python DispmanX
 
 Hello and welcome to the documentation for Python DispmanX, a pure Python[^1]
-package for interacting with the Raspberry Pi's DispmanX low-level video API. My
-hope is that you find it useful for creating all sorts of different apps,
-widgets, and graphical overlays for your Pi. I hope you has as much using it as
-I did writing it!
+package for interacting with the Raspberry Pi's low-level video API. My hope is
+that you find it useful for creating all sorts of different apps, widgets, and
+graphical overlays for your Pi. I hope you have as much using it as I did
+writing it!
 
 ## Quickstart
 
-Follow the steps to install the [DispmanX package][dispmanx-pypi] and run your
-first small program following the steps below.
+Follow the steps below to install the [DispmanX package][dispmanx-pypi] and run
+your first program using this library!
 
 ### Installation
 
 !!! note "Installation"
 
-    To install the [dispmanx package][dispmanx-pypi] from the
+    To install the [DispmanX package][dispmanx-pypi] from the
     [Python Package Index (PyPI)][pypi], type the following at the command line,
 
     === "With NumPy support"
         ```bash
-        # Install dispmanx with optional (and recommended) NumPy support
+        # Install DispmanX with optional (and recommended) NumPy support
         pip install dispmanx[numpy]
         ```
     === "From source with NumPy"
@@ -42,7 +42,7 @@ first small program following the steps below.
         ```
     === "Without NumPy"
         ```bash
-        # Install dispmanx without NumPy
+        # Install DispmanX without NumPy
         pip install dispmanx
         ```
     === "From source without NumPy"
@@ -55,11 +55,11 @@ first small program following the steps below.
 
 !!! example "Examples"
 
-    Below are a few examples to get you started using [pygame][pygame],
-    [Pillow][pillow], or [Pycairo][pycairo].
+    Below are a few example programs to get you started using [pygame][],
+    [Pillow][], or [Pycairo][].
 
     === "pygame Example"
-        Install [pygame][pygame],
+        Install [pygame][],
 
         ```bash
         pip install pygame
@@ -74,10 +74,10 @@ first small program following the steps below.
     === "Pillow example"
         !!! tip "NumPy Required"
             For this example to work correctly, ensure you've installed
-            [NumPy][numpy]. The easiest way to do that with [pip] is:
+            [NumPy][]. The easiest way to do that with [pip] is:
             `#!bash pip install dispmanx[numpy]`
 
-        Install [Pillow][pillow],
+        Install [Pillow][],
 
         ```bash
         # NumPy is required for this example
@@ -91,7 +91,7 @@ first small program following the steps below.
         ```
 
     === "Pycairo Example"
-        Install [Pycairo][pycairo],
+        Install [Pycairo][],
 
         ```bash
         pip install pycairo
@@ -105,24 +105,24 @@ first small program following the steps below.
 
 ## Use Cases
 
-You may be asking why this library, when you could just [pygame][pygame]. Here's
+You may be asking why this library, when you could just [pygame][]? Here's
 some potential use cases.
 
-* [pygame][pygame] using its underlying [SDL][sdl] library requires either X11
+* [pygame][] using its underlying [SDL][] library requires either X11
     or fbcon drivers. X11 is great, but it requires a desktop environment on
-    your Pi. And fbcon appears to no longer supported by [pygame][pygame]
-    version 2. This library allows you to use familiar [pygame][pygame] idioms
+    your Pi. And fbcon appears to no longer supported by [pygame][]
+    version 2. This library allows you to use familiar [pygame][] idioms
     with the Raspberry Pi's native DispmanX layer.
 * You may want to your program to have **transparent overlays.**
-    [pygame][pygame] and [SDL][sdl] do not support them by default. With this
-    package, you can do write something with just that![^2]
-* You may want to directly interact with [NumPy][numpy] arrays of RGB or RBGA
-    pixels with arbitrary imaging tool kits like [Pillow][pillow] or
+    [pygame][] and [SDL][] do not support them by default. With this
+    package, you can do write something that does just that![^2]
+* You may want to directly interact with [NumPy][] arrays of RGB or RBGA
+    pixels with arbitrary imaging tool kits like [Pillow][] or
     [Cairo][pycairo].
 
-My use case is retro style CRT TV app, using the Pi-specific video player
-[omxplayer][omxplayer] with and semi-transparent overlays for menus, "channels,"
-and subtitles[^3].
+My use case is retro style CRT TV hooked up to a Pi using the Pi-specific video
+player [omxplayer][omxplayer] complete with and semi-transparent overlays for
+menus, "channels," and subtitles[^3].
 
 ## What's Next?
 
@@ -130,16 +130,16 @@ and subtitles[^3].
     DispmanX.
 
 * Head over to the [API documentation](api.md) and read about the
-    [DispmanX][dispmanx.DispmanX] class, the main entrypoint for this package.
+    [dispmanx.DispmanX][] class, the main entrypoint for this package.
 
 * Check out some [additional information](info.md) about this package.
 
 [^1]: I say "pure Python" however this package uses the Python's included
-    [ctypes][ctypes] library perform "foreign function calls" to `bcm_host.so`
+    [ctypes][] library perform "foreign function calls" to `bcm_host.so`
     &mdash; a C library included with Raspberry Pi OS to interface with the
     DispmanX layer directly.
 [^2]: Fun fact, transparent overlays is the reason I wrote this package.
-[^3]: While [omxplayer][omxplayer] does supports subtitle, but they
+[^3]: While [omxplayer][] does supports subtitle, but they
     [don't seem to be working on the Raspberry Pi 4B][omxplayer-subtitles-bug].
     And anyways, I wanted to render custom subtitles anyway.
 
