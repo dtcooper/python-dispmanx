@@ -1,4 +1,4 @@
-FROM ghcr.io/dtcooper/raspberrypi-os:python3.10
+FROM ghcr.io/dtcooper/raspberrypi-os:python3.9
 
 ARG POETRY_VERSION=1.1.14
 
@@ -6,26 +6,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_CREATE=false
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-ENV PATH="/root/.poetry/bin:${PATH}"
-
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        libraspberrypi0 \
-        # For pygame on armhf, not strictly required but used in demos
-        $([ "$(dpkg --print-architecture)" = "armhf" ] && echo \
-            libfreetype6-dev \
-            libjpeg-dev \
-            libportmidi-dev \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libsdl2-mixer-dev \
-            libsdl2-ttf-dev \
-        ) \
-    && rm -rf /var/lib/apt/lists/*
+RUN curl -sSL https://install.python-poetry.org | python -
+ENV PATH="/root/.local/bin:${PATH}"
 
 COPY pyproject.toml poetry.lock /app/
 WORKDIR /app
-RUN poetry install --extras numpy
+
+# Need to use pip to actual install to properly support piwheel.org
+RUN poetry export --without-hashes --dev --extras numpy -o requirements.txt \
+    && pip install -r requirements.txt
 
 COPY . /app
