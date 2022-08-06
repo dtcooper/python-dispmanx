@@ -1,0 +1,15 @@
+name: Publish to PyPI
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Publish
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
