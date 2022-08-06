@@ -21,7 +21,7 @@ jobs:
         name: Install poetry
         run: |
           curl -sSL https://install.python-poetry.org | python -
-          export PATH="/root/.local/bin:${PATH}"
+          export PATH="$HOME/.local/bin:${PATH}"
       -
         name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
