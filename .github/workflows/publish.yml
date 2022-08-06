@@ -6,10 +6,22 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     name: Publish
+    env:
+      POETRY_VERSION: 1.1.14
     steps:
       -
         name: Checkout
         uses: actions/checkout@v3
+      -
+        name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      -
+        name: Install poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python -
+          export PATH="/root/.local/bin:${PATH}"
       -
         name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
