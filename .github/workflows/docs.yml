@@ -26,10 +26,14 @@ jobs:
         with:
           python-version: '3.9'
       -
-        name: Publish docs
+        name: Setup requirements
         run: |
           curl -sSL https://install.python-poetry.org | python -
           poetry install
+          git config user.name 'Docs Deploy'
+          git config user.email 'docs-deploy@users.noreply.github.com'
       -
-        name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+        name: Deploy dev docs
+        # TODO shouldn't deploy dev to latest, and should run latest on tag push
+        run: |
+          poetry run mike deploy --push --update-aliases dev latest
