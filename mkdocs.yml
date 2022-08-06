@@ -16,6 +16,8 @@ extra_css:
 plugins:
   - search
   - autorefs
+  - mike:
+      canonical_version: latest
   - mkdocstrings:
       default_handler: python
       handlers:
