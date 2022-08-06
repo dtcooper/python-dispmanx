@@ -94,7 +94,7 @@ theme:
     -
       scheme: default
       media: '(prefers-color-scheme: light)'
-      primary: deep orange
+      primary: pink
       accent: blue
       toggle:
         icon: material/brightness-7
