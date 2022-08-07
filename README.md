@@ -7,40 +7,27 @@
   <a href="https://pypi.org/project/dispmanx/">Python Package Index</a>
 </p>
 
-This is a Python library for interacting with the Raspberry Pi's DispmanX video
-API. Some use cases for this are,
-
-  * Directly writing to the lowlevel graphics layer of your Pi with relatively
-    high performance (for Python). There's no need to install X11.
-  * Small [pygame][pygame] or [Pillow][pillow]-based applications can be overlayed
-    onto the screen, with full support for transparency.
-
-This library uses [ctypes][ctypes] to directly interact with your Raspberry Pi's
-`bcm_host.so` library.
-
 ## Usage
 
-See the [Quickstart section in the docs][quickstart].
+Install with pip,
+
+```bash
+pip install dispmanx
+```
+
+Then see the [Quickstart section in the docs][quickstart].
 
 ## TODO List
 
-- [x] Publish package to [PyPI][pypi]
-- [ ] Add API docs using [MkDocs][mkdocs], [Material for MkDocs][mkdocs-material],
-    and [mkdocstrings][mkdocstrings]
-- [ ] Allow multiple layers
+- [x] Publish package to PyPI
+- [x] Add API docs using MkDocs, Material for MkDocs, mkdocstrings, and mike
+- [ ] Allow multiple layers, and different displays
 - [ ] Support additional pixel types
 - [ ] Support custom dimensions and offsets – API supports it, but requires weird
-    multiples of 16 or 32, [as documented here](picamera-overlay-docs). This
+    multiples of 16 or 32, [as documented here][picamera-overlay-docs]. This
     requires testing, because anecdotally it seems to work with smaller multiples.
-- [ ] Test run over SSH onto my home pi
+- [ ] Tests run over SSH onto my home pi (github runners won't do)
+- [ ] Call destroy / deinitialize functions in bcm_host.h
 
-
-[ctypes]: https://docs.python.org/3/library/ctypes.html
-[mkdocs-material]: https://squidfunk.github.io/mkdocs-material/
-[mkdocs]: https://www.mkdocs.org/
-[mkdocstrings]: https://mkdocstrings.github.io/
 [picamera-overlay-docs]: https://picamera.readthedocs.io/en/release-1.13/api_renderers.html#picamera.PiOverlayRenderer
-[pillow]: https://pillow.readthedocs.io/
-[pygame]: https://www.pygame.org/docs/
-[pypi]: https://pypi.org/
 [quickstart]: https://dtcooper.github.io/python-dispmanx/#quickstart
