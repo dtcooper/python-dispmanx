@@ -90,15 +90,49 @@ class DispmanX:
 
         Arguments:
             layer: What layer to choose. For example, the default layer of
-                Raspberry Pi OS Lite's terminal is `-127`. while omxplayer is
+                Raspberry Pi OS Lite's terminal is `-127`, while omxplayer is
                 `0`.
-            display: Test
-            format: Test
-            buffer_type: Test
+
+            display: Which display to use. Choices:
+
+                * `None` &mdash; the default display as returned by
+                    [get_default_display()][dispmanx.DispmanX.get_default_display]
+                * An [int][] device number of a specific display
+                * A [Display][dispmanx.dispmanx.Display] object, for example,
+                    returned by [list_displays()][dispmanx.DispmanX.list_displays])
+            format: Pixel format for the object. Choices:
+
+                * `'RGBA'` &mdash; 32-bit red, green, blue, and alpha
+                * `'RGB'` &mdash; 24-bit red, green, and blue
+                * `'ARGB'` &mdash; 32-bit alpha, red, green, and blue
+                * `'RGBX'` &mdash; 32-bit red, green, blue and an unused (`X`) byte
+
+            buffer_type: Type of buffer to write to the display from. Choices:
+
+                * `'auto'` &mdash; defaults to a [NumPy array][numpy.array] if
+                    [NumPy][numpy] is available, otherwise a [ctypes][]
+                    [Array][ctypes.Array] of [c_char][ctypes.c_char] as
+                    described below
+                * `'numpy'` &mdash; a [NumPy array][numpy.array]
+                * `'ctypes` &mdash; a [ctypes][] [Array][ctypes.Array] of
+                    [c_char][ctypes.c_char] created with
+                    [create_string_buffer()][ctypes.create_string_buffer]
+
+        Raises:
+            DispmanXError: A user error occured by specifying an incorrect
+                argument.
+            DispmanXRuntimeError: A serious error occured with the underlying
+                DispmanX layer on your PI.
 
         Attributes:
-            display Display: test
-            size Size: test
+            buffer: A buffer representing underlying raw pixel data. It will be
+                a [NumPy array][numpy.array] or [ctypes][] [Array][ctypes.Array]
+                of [c_char][ctypes.c_char] depending on the value of the
+                `buffer_type` argument.
+            display Display: The display for which this object is attached to
+            size Size: The dimensions of the current display
+            width int: The width of the current display
+            height int: The height of the current display
         """
         self._bcm_host_init()
         self._format = format
@@ -224,6 +258,11 @@ class DispmanX:
             logger.debug(f"Got surface element handle: {self._surface_element_handle}")
 
     def update(self) -> None:
+        """Update the pixels based on what's in the buffer
+
+        Raises:
+            DispmanXRuntimeError: Raises if there's an error writing to the video
+                memory"""
         if HAVE_NUMPY:
             buffer = numpy.ctypeslib.as_ctypes(self._buffer)
         else:
@@ -296,7 +335,8 @@ class DispmanX:
         used when creating [DispmanX][dispmanx.DispmanX] objects by default.
 
         Returns:
-            The default [Display][dispmanx.dispmanx.Display]."""
+            The default [Display][dispmanx.dispmanx.Display].
+        """
         displays = cls.list_displays()
         if len(displays) == 0:
             raise DispmanXRuntimeError("No displays found!")

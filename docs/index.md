@@ -81,8 +81,8 @@ potential use cases.
 * You may want to your program to have **transparent overlays.** [pygame] and
     [SDL] do not support them by default. With this package, you can do write
     something that does just that![^2]
-* You may want to directly interact with [NumPy] arrays of RGBA (or RGB) pixels
-    with arbitrary imaging tool kits like [Pillow] or [Cairo][pycairo].
+* You may want to directly interact with [NumPy][numpy] arrays of RGBA (or RGB)
+    pixels with arbitrary imaging tool kits like [Pillow] or [Cairo][pycairo].
 
 My use case is retro style CRT TV hooked up to a Pi using the Pi-specific video
 player [omxplayer][omxplayer] complete with and semi-transparent overlays for
@@ -106,7 +106,6 @@ menus, "channels," and subtitles[^3].
     And anyways, I wanted to render custom subtitles anyway.
 
 [dispmanx-pypi]: https://pypi.org/project/dispmanx/
-[numpy]: https://numpy.org/doc/stable/
 [omxplayer-subtitles-bug]: https://github.com/popcornmix/omxplayer/issues/736
 [omxplayer]: https://github.com/popcornmix/omxplayer
 [pi-os]: https://www.raspberrypi.com/software/
