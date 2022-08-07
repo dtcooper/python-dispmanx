@@ -134,10 +134,10 @@ menus, "channels," and subtitles[^3].
 
 * Check out some [additional information](info.md) about this package.
 
-[^1]: I say "pure Python" however this package uses the Python's included
-    [ctypes][] library perform "foreign function calls" to `bcm_host.so`
-    &mdash; a C library included with Raspberry Pi OS to interface with the
-    DispmanX layer directly.
+[^1]: I say "pure Python" however this package uses Python's included [ctypes][]
+    library perform "foreign function calls" to `bcm_host.so` &mdash; a C
+    library included with Raspberry Pi OS to interface with the DispmanX layer
+    directly.
 [^2]: Fun fact, transparent overlays is the reason I wrote this package.
 [^3]: While [omxplayer][] does supports subtitle, but they
     [don't seem to be working on the Raspberry Pi 4B][omxplayer-subtitles-bug].

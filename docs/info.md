@@ -4,13 +4,43 @@ title: More Info
 
 # Additional Information
 
-## OS and Device Support
+## Python, OS and Device Version Support
 
-Bullseye 32- and 64- bit Raspberry Pi OS
+OS Support:
+:   The latest versions of 32- and 64- bit Raspberry Pi OS are supports. As of
+    the time of this writing, that's based on [Debian Bullseye (11.x)][debian-bullseye].
 
-## Notes On Using [ctypes][]
+Python Version
+:   The minimum version of Python supported is 3.9. That's the default version
+    installed on [Raspberry Pi OS][pi-os].
+
+Raspberry Pi Versions
+:   This library should work on any versions of the Pi, but I've specifically
+    tested,
+
+    1. Raspberry Pi 4 B
+    2. Raspberry Pi 3 B+
+    3. Raspberry Pi 3 B
+    4. Raspberry Pi 2
+    5. Raspberry Pi B
+
+If you're using an older version Python, Raspberry Pi OS, and/or a different OS
+entirely, you can always use [Docker][] you can use any version of the Pi. See
+the section on [Docker and Compose][docker-and-compose] just below.
 
 ## [Docker][] and [Compose][]
+
+## [ctypes][] and `bcm_host.so`
+
+While Python DispmanX is written completely in Python, it uses Python's included
+[ctypes][] library to perform "foreign function calls" to `bcm_host.so`. In
+short it calls the C library included with Raspberry Pi OS to interface with the
+DispmanX layer directly.
+
+The library `bcm_host.so` is available through the `libraspberrypi0` Debian
+package, which should have come installed on your Pi if you used Raspberry Pi
+OS. If that's not available, you can always use [Docker][] following the
+instructions in the [Docker and Compose][docker-and-compose] section above.
 
 ## Acknowledgements
 
@@ -61,8 +91,10 @@ call the DispmanX APIs from this Python package.
 TODO
 
 [andrew duncan]: https://github.com/andrewfrommelbourne
+[debian-bullseye]: https://www.debian.org/releases/bullseye/
 [compose]: https://docs.docker.com/compose/
 [docker]: https://www.docker.com/
+[pi-os]: https://www.raspberrypi.com/software/
 [picamera]: https://picamera.readthedocs.io/
 [pydispmanx]: https://github.com/eclispe/pydispmanx
 [pypi]: https://pypi.org/
