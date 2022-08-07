@@ -34,6 +34,10 @@ jobs:
           git config user.email 'docs-deploy@users.noreply.github.com'
       -
         name: Deploy dev docs
-        # TODO shouldn't deploy dev to latest, and should run latest on tag push
         run: |
-          poetry run mike deploy --push --update-aliases dev latest
+          poetry run mike deploy --push dev
+      -
+        name: Deploy latest docs
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        run: |
+          poerty run mike deploy --push --update-aliases ${{ github.ref_name }} latest
