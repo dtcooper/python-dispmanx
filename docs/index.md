@@ -1,14 +1,15 @@
 ---
 title: Intro
+nav_title: fuck
 ---
 
 !!! danger "A Word of Caution"
     Currently, **Python DispmanX is under active development**. This
     documentation may not reflect the latest changes, or may include changes
-    that are not yet available on [PyPI][]. _Beware!_
+    that are not yet available on [PyPI]. _Beware!_
 
-    It's recommended that you at least install the latest version from
-    source, described below in the [installation][installation] section.
+    It's recommended that you at least install the latest version from source,
+    described below in the [installation][installation] section.
 
 # Welcome to Python DispmanX
 
@@ -51,74 +52,37 @@ your first program using this library!
         pip install git+https://github.com/dtcooper/python-dispmanx.git
         ```
 
-### Code Examples
+### [pygame] Example
 
-!!! example "Examples"
+To get going with your first [pygame] program, first install the library,
 
-    Below are a few example programs to get you started using [pygame][],
-    [Pillow][], or [Pycairo][].
+```bash
+pip install pygame
+```
 
-    === "pygame Example"
-        Install [pygame][],
+Then try this out,
 
-        ```bash
-        pip install pygame
-        ```
+```python title="pygame_test.py"
+--8<-- "pygame_test.py"
+```
 
-        Then try out this sample program,
-
-        ```python title="pygame_test.py"
-        --8<-- "pygame_test.py"
-        ```
-
-    === "Pillow example"
-        !!! tip "NumPy Required"
-            For this example to work correctly, ensure you've installed
-            [NumPy][]. The easiest way to do that with [pip] is:
-            `#!bash pip install dispmanx[numpy]`
-
-        Install [Pillow][],
-
-        ```bash
-        # NumPy is required for this example
-        pip install pillow
-        ```
-
-        Then try out this sample program,
-
-        ```python title="pillow_test.py"
-        --8<-- "pillow_test.py"
-        ```
-
-    === "Pycairo Example"
-        Install [Pycairo][],
-
-        ```bash
-        pip install pycairo
-        ```
-
-        Then try out this sample program,
-
-        ```python title="pycairo_test.py"
-        --8<-- "pycairo_test.py"
-        ```
+More examples are available on the [recipes](recipes.md) page.
 
 ## Use Cases
 
-You may be asking why this library, when you could just [pygame][]? Here's
-some potential use cases.
+You may be asking why this library, when you could just [pygame]? Here are some
+potential use cases.
 
-* [pygame][] using its underlying [SDL][] library requires either X11
-    or fbcon drivers. X11 is great, but it requires a desktop environment on
-    your Pi. And fbcon appears to no longer supported by [pygame][]
-    version 2. This library allows you to use familiar [pygame][] idioms
-    with the Raspberry Pi's native DispmanX layer.
-* You may want to your program to have **transparent overlays.**
-    [pygame][] and [SDL][] do not support them by default. With this
-    package, you can do write something that does just that![^2]
-* You may want to directly interact with [NumPy][] arrays of RGB or RBGA
-    pixels with arbitrary imaging tool kits like [Pillow][] or
-    [Cairo][pycairo].
+* [pygame] using its underlying [SDL] library requires either X11 or fbcon
+    drivers. X11 is great, but it requires a desktop environment on your Pi. And
+    fbcon appears to no longer supported by [pygame] version 2. This library
+    allows you to use familiar [pygame] idioms with the Raspberry Pi's native
+    DispmanX layer.
+* You may want to your program to have **transparent overlays.** [pygame] and
+    [SDL] do not support them by default. With this package, you can do write
+    something that does just that![^2]
+* You may want to directly interact with [NumPy] arrays of RGBA (or RGB) pixels
+    with arbitrary imaging tool kits like [Pillow] or [Cairo][pycairo].
 
 My use case is retro style CRT TV hooked up to a Pi using the Pi-specific video
 player [omxplayer][omxplayer] complete with and semi-transparent overlays for
@@ -127,11 +91,9 @@ menus, "channels," and subtitles[^3].
 ## What's Next?
 
 * Check out some [code recipes](recipes.md) that will show you how to use
-    DispmanX.
-
+    DispmanX with [pygame], [Pillow], and [Pycairo].
 * Head over to the [API documentation](api.md) and read about the
-    [dispmanx.DispmanX][] class, the main entrypoint for this package.
-
+    [DispmanX][dispmanx.DispmanX] class, the main entrypoint for this package.
 * Check out some [additional information](info.md) about this package.
 
 [^1]: I say "pure Python" however this package uses Python's included [ctypes][]
@@ -139,7 +101,7 @@ menus, "channels," and subtitles[^3].
     library included with Raspberry Pi OS to interface with the DispmanX layer
     directly.
 [^2]: Fun fact, transparent overlays is the reason I wrote this package.
-[^3]: While [omxplayer][] does supports subtitle, but they
+[^3]: While [omxplayer] does supports subtitle, but they
     [don't seem to be working on the Raspberry Pi 4B][omxplayer-subtitles-bug].
     And anyways, I wanted to render custom subtitles anyway.
 
