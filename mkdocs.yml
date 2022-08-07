@@ -16,8 +16,6 @@ extra_css:
 plugins:
   - search
   - autorefs
-  - mike:
-      canonical_version: latest
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -59,8 +57,6 @@ markdown_extensions:
   - toc:
       permalink: "\u2190"
 extra:
-  version:
-    provider: mike
   generator: false
   social:
     - icon: fontawesome/brands/twitter

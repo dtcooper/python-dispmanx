@@ -29,18 +29,10 @@ jobs:
         with:
           python-version: '3.9'
       -
-        name: Setup requirements
+        name: Deploy docs
         run: |
           curl -sSL https://install.python-poetry.org | python -
           poetry install
           git config user.name 'Docs Deploy'
           git config user.email 'docs-deploy@users.noreply.github.com'
-      -
-        name: Deploy dev docs
-        run: |
-          poetry run mike deploy --push dev
-      -
-        name: Deploy latest docs
-        if: startsWith(github.event.ref, 'refs/tags/v')
-        run: |
-          poetry run mike deploy --push --no-redirect --update-aliases ${{ github.ref_name }} latest
+          poetry run mkdocs gh-deploy
