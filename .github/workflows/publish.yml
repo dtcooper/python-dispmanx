@@ -7,9 +7,6 @@ on:
       - 'v*'
   workflow_dispatch:
 
-concurrency:
-  group: docs
-
 jobs:
   build:
     runs-on: ubuntu-20.04

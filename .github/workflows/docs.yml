@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+concurrency:
+  group: docs
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -40,4 +43,4 @@ jobs:
         name: Deploy latest docs
         if: startsWith(github.event.ref, 'refs/tags/v')
         run: |
-          poetry run mike deploy --push --update-aliases ${{ github.ref_name }} latest
+          poetry run mike deploy --push --no-redirect --update-aliases ${{ github.ref_name }} latest
