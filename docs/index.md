@@ -13,7 +13,7 @@ nav_title: fuck
 # Welcome to Python DispmanX
 
 Hello and welcome to the documentation for Python DispmanX, a pure Python[^1]
-package for interacting with the Raspberry Pi's low-level video API. My hope is
+library for interacting with the Raspberry Pi's low-level video API. My hope is
 that you find it useful for creating all sorts of different apps, widgets, and
 graphical overlays for your Pi. I hope you have as much using it as I did
 writing it!
