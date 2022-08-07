@@ -4,9 +4,8 @@ nav_title: fuck
 ---
 
 !!! danger "A Word of Caution"
-    Currently, **Python DispmanX is under active development**. This
-    documentation may not reflect the latest changes, or may include changes
-    that are not yet available on [PyPI]. _Beware!_
+    Currently, **Python DispmanX is under active development**. The API may be
+    unstable or change. _Beware!_
 
     It's recommended that you at least install the latest version from source,
     described below in the [installation][installation] section.
