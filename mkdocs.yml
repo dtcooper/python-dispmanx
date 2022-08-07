@@ -57,11 +57,19 @@ markdown_extensions:
   - toc:
       permalink: "\u2190"
 extra:
-  generator: false
   social:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/dtcooper
       name: '@dtcooper on Twitter'
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/dtcooper
+      name: '@dtcooper on Instagram'
+    - icon: fontawesome/solid/radio
+      link: https://www.iheartradio.ca/newstalk-1010/host/Person/David%20Cooper
+      name: My bio on iHeartRadio
+    - icon: fontawesome/solid/globe
+      link: https://jew.pizza/
+      name: My personal website
 theme:
   name: material
   favicon: assets/favicon.svg
@@ -81,19 +89,17 @@ theme:
     text: Space Grotesk
     code: Space Mono  # ligatures disabled in extra.css
   palette:
-    -
-      scheme: slate
-      media: '(prefers-color-scheme: dark)'
-      primary: pink
-      accent: light blue
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
-    -
-      scheme: default
-      media: '(prefers-color-scheme: light)'
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
       primary: pink
       accent: blue
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      primary: pink
+      accent: light blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode

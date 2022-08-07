@@ -8,8 +8,9 @@ nav_title: fuck
     documentation may not reflect the latest changes, or may include changes
     that are not yet available on [PyPI]. _Beware!_
 
-    It's recommended that you at least install the latest version from source,
-    described below in the [installation][installation] section.
+    Until the API stabilizes, it's recommended that you install the latest
+    version from source, described below in the [installation][installation]
+    section.
 
 # Welcome to Python DispmanX
 
@@ -36,7 +37,12 @@ your first program using this library!
         # Install DispmanX with optional (and recommended) NumPy support
         pip install dispmanx[numpy]
         ```
-    === "From source with NumPy"
+
+        !!! danger "Installing From Source Recommended"
+            Until the API stabilizes, it's recommended that you install the
+            latest version from source, described in the _"From Source With
+            NumPy"_ content tab.
+    === "From Source with NumPy"
         ```bash
         # Or install directly from the latest developmental sources with NumPy support
         pip install git+https://github.com/dtcooper/python-dispmanx.git#egg=dispmanx[numpy]
@@ -46,7 +52,7 @@ your first program using this library!
         # Install DispmanX without NumPy
         pip install dispmanx
         ```
-    === "From source without NumPy"
+    === "From Source Without NumPy"
         ```bash
         # Or install directly from the latest developmental sources without NumPy
         pip install git+https://github.com/dtcooper/python-dispmanx.git

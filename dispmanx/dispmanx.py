@@ -13,27 +13,10 @@ else:
     HAVE_NUMPY = True
 
 from . import bcm_host as bcm
+from .exceptions import DispmanXError, DispmanXRuntimeError
 
 
 logger = logging.getLogger("dispmanx")
-
-
-class DispmanXRuntimeError(RuntimeError):
-    """Raised when an **irrecoverable** error occurs with the underlying DispmanX library.
-
-    Under normal circumstances, you should destroy any [DispmanX][dispmanx.DispmanX]
-    objects you've instantiated when one of these occurs. Or, your program should
-    cleanly exit.
-    """
-    pass
-
-
-class DispmanXError(Exception):
-    """Raised when a **recoverable** error occurs with the underlying DispmanX library.
-
-    Likely a programmer error. You can try whatever you were doing again and
-    correcting the offending behavior."""
-    pass
 
 
 class Size(NamedTuple):
@@ -262,7 +245,8 @@ class DispmanX:
 
         Raises:
             DispmanXRuntimeError: Raises if there's an error writing to the video
-                memory"""
+                memory
+            """
         if HAVE_NUMPY:
             buffer = numpy.ctypeslib.as_ctypes(self._buffer)
         else:
