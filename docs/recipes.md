@@ -66,7 +66,7 @@ Then run this program,
 
 ## [NumPy][numpy] Example
 
-All you need is [NumPy][numpy] for this one. First, install it
+All you need is [NumPy][numpy] for this one. First, install it,
 
 ```bash
 pip install numpy
