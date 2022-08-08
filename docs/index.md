@@ -91,25 +91,25 @@ potential use cases.
     pixels with arbitrary imaging tool kits like [Pillow] or [Cairo][pycairo].
 
 My use case is retro style CRT TV hooked up to a Pi using the Pi-specific video
-player [omxplayer][omxplayer] complete with and semi-transparent overlays for
+player [omxplayer][omxplayer] complete with semi-transparent overlays for
 menus, "channels," and subtitles[^3].
 
 ## What's Next?
 
 * Check out some [code recipes](recipes.md) that will show you how to use
-    DispmanX with [pygame], [Pillow], [Pycairo], plain [NumPy][numpy].
+    DispmanX with [pygame], [Pillow], [Pycairo], and plain [NumPy][numpy].
 * Head over to the [API documentation](api.md) and read about the
     [DispmanX class][dispmanx.DispmanX], the main entrypoint for this package.
 * Check out some [additional information](info.md) about this package.
 
 [^1]: I say "pure Python" however this package uses Python's included [ctypes][]
-    library perform "foreign function calls" to `bcm_host.so` &mdash; a C
+    library to perform "foreign function calls" to `bcm_host.so` &mdash; a C
     library included with Raspberry Pi OS to interface with the DispmanX layer
     directly.
 [^2]: Fun fact, transparent overlays is the reason I wrote this package.
-[^3]: While [omxplayer] does supports subtitle, but they
+[^3]: While [omxplayer] does support subtitles, they
     [don't seem to be working on the Raspberry Pi 4B][omxplayer-subtitles-bug].
-    And anyways, I wanted to render custom subtitles anyway.
+    And anyways, I wanted to render custom subtitles.
 
 [dispmanx-pypi]: https://pypi.org/project/dispmanx/
 [omxplayer-subtitles-bug]: https://github.com/popcornmix/omxplayer/issues/736
