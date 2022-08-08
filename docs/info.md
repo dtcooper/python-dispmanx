@@ -30,14 +30,14 @@ Raspberry Pi Versions
     5. Raspberry Pi B
 
 If you're using an older version Python, Raspberry Pi OS, and/or a different OS
-entirely, you can always use [Docker] you can use any version of the Pi. See the
+entirely, you can always use [Docker] on any supported version of the Pi. See the
 section on [Docker and Compose][docker-and-compose] below.
 
 
 ## [ctypes][] and `bcm_host.so`
 
 While Python DispmanX is written completely in Python, it uses Python's included
-[ctypes] library to perform "foreign function calls" to `bcm_host.so`. In short
+[ctypes] library to perform "foreign function calls" to `bcm_host.so`. In short,
 it calls the C library included with Raspberry Pi OS to interface with the
 DispmanX layer directly.
 
@@ -49,7 +49,7 @@ instructions in the [Docker and Compose][docker-and-compose] section below.
 
 ## [Docker] and [Compose]
 
-Both [Docker] and [Docker Compose][Compose] work great. There actually how I run
+Both [Docker] and [Docker Compose][Compose] work great. They're actually how I run
 the library. Details below.
 
 ### Using [Docker]
@@ -62,10 +62,10 @@ The base container for Debian Bullseye doesn't by default contain the necessary
 `libraspberrypi0` package as described above. So, you'll need to either add the
 ["Raspbian Repository"][raspbian-repo], or use my
 [minimal Raspberry Pi OS base containers][pi-base-containers]. Three variants
-are provided.
+that will work are provided.
 
 The device `/dev/vchiq` needs to be exposed to container. For the Debian image,
-you'll need to install pip yourself. Three images are provided.
+you'll need to install pip yourself. Three images are listed in the table below.
 
 | Description       | Image Name                                   |
 |------------------:|:---------------------------------------------|
@@ -75,7 +75,7 @@ you'll need to install pip yourself. Three images are provided.
 
 ### Using [Compose]
 
-Similarly, using [Docker Compose][compose] works great. You'll similarly need to
+Using [Docker Compose][compose] also works great. You'll need to similarly
 expose the `/dev/vchiq` device, however. Here's a sample `docker-compose.yml`
 file,
 
@@ -98,13 +98,13 @@ of the main ones are described below.
 First and foremost, let me acknowledge the work [Tim Clark] put into
 [PyDispmanx].
 
-[PyDispmanx] is another Python library _is_ available that functions somewhat
+[PyDispmanx] is another Python library available that functions somewhat
 similarly. Honestly, it's great and I would recommend it! I owe a debt of
 gratitude to its author, for two reasons,
 
 1. First and foremost, showing me that interfacing with the Pi's DispmanX API
    via Python is possible; and
-2. Being available to peep into his source code.
+2. Being available to peep into its source code.
 
 Some reasons I've chosen to re-write from scratch are:
 
