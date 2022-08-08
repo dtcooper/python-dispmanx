@@ -6,7 +6,7 @@ from dispmanx import DispmanX
 def random_color():
     return tuple(uniform(0, 1) for _ in range(3))
 
-display = DispmanX(format="RGBX")
+display = DispmanX(pixel_format="RGBX")
 width, height = display.size
 surface = ImageSurface.create_for_data(display.buffer, FORMAT_RGB24, width, height)
 context = Context(surface)

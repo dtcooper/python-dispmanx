@@ -99,7 +99,7 @@ menus, "channels," and subtitles[^3].
 * Check out some [code recipes](recipes.md) that will show you how to use
     DispmanX with [pygame], [Pillow], and [Pycairo].
 * Head over to the [API documentation](api.md) and read about the
-    [DispmanX][dispmanx.DispmanX] class, the main entrypoint for this package.
+    [DispmanX class][dispmanx.DispmanX], the main entrypoint for this package.
 * Check out some [additional information](info.md) about this package.
 
 [^1]: I say "pure Python" however this package uses Python's included [ctypes][]

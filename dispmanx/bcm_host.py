@@ -19,6 +19,7 @@ DISPMANX_NO_HANDLE = 0
 DISPMANX_NO_ROTATE = 0
 DISPMANX_PROTECTION_NONE = 0
 TV_MAX_ATTACHED_DISPLAYS = 16
+VC_IMAGE_RGB565 = 1
 VC_IMAGE_RGB888 = 5
 VC_IMAGE_RGBA32 = 15
 VC_IMAGE_TF_RGBX32 = 21
@@ -80,6 +81,10 @@ vc_dispmanx_resource_create = _lib.vc_dispmanx_resource_create
 vc_dispmanx_resource_create.argtypes = (ct.c_uint32, ct.c_uint32, ct.c_uint32, ct.POINTER(ct.c_uint32))
 vc_dispmanx_resource_create.restype = ct.c_uint32
 
+vc_dispmanx_resource_delete = _lib.vc_dispmanx_resource_delete
+vc_dispmanx_resource_delete.argtypes = (ct.c_uint32,)
+vc_dispmanx_resource_delete.restype = ct.c_int
+
 vc_dispmanx_element_add = _lib.vc_dispmanx_element_add
 vc_dispmanx_element_add.argtypes = (
     ct.c_uint32,
@@ -95,14 +100,18 @@ vc_dispmanx_element_add.argtypes = (
 )
 vc_dispmanx_element_add.restype = ct.c_uint32
 
+vc_dispmanx_element_remove = _lib.vc_dispmanx_element_remove
+vc_dispmanx_element_remove.argtypes = (ct.c_uint32, ct.c_uint32)
+vc_dispmanx_element_remove.restype = ct.c_int
+
 vc_dispmanx_resource_write_data = _lib.vc_dispmanx_resource_write_data
-vc_dispmanx_resource_write_data.argtypes = [
+vc_dispmanx_resource_write_data.argtypes = (
     ct.c_uint32,
     ct.c_uint32,
     ct.c_int,
     ct.c_void_p,
     ct.POINTER(VC_RECT_T),
-]
+)
 vc_dispmanx_resource_write_data.restype = ct.c_int
 
 vc_dispmanx_update_submit_sync = _lib.vc_dispmanx_update_submit_sync

@@ -1,7 +1,8 @@
 from contextlib import contextmanager
-import ctypes as ct
+import ctypes
+from functools import wraps
 import logging
-from typing import ClassVar, Generator, Literal, NamedTuple, Union, Optional
+from typing import Any, ClassVar, Generator, Literal, NamedTuple, Union
 
 
 try:
@@ -12,7 +13,7 @@ except ImportError:
 else:
     HAVE_NUMPY = True
 
-from . import bcm_host as bcm
+from . import bcm_host
 from .exceptions import DispmanXError, DispmanXRuntimeError
 
 
@@ -20,30 +21,77 @@ logger = logging.getLogger("dispmanx")
 
 
 class Size(NamedTuple):
+    """
+    Returned by various interactions with the [DismpanX][dispmanx.DispmanX]
+    and [Display][dispmanx.dispmanx.Display] classes.
+
+    Not instantiated directly.
+
+    Attribute:
+        width int: The width component
+        height int: The height component
+    """
+
     width: int
     height: int
 
 
 class Display(NamedTuple):
-    """
-    Not instantiated directly. Returned by various methods and classmethods on
-    the DispmanX object.
+    """Returned by various interactions with the [DispmanX][dispmanx.DispmanX] class.
+
+    Not instantiated directly.
 
     Attributes:
-        device_id int: Test
-        name str: Test
-        size Size: test
+        device_id int:
+            The numeric ID associated with this display. You can use this to
+            instantiate a [DispmanX][dispmanx.DispmanX] for this display.
+        name str: The string representation of this display, for example
+            `"Main LCD"`, `"HDMI 0"`, or `"Composite"` to name a few.
+        size Size: The size of this display.
     """
+
     device_id: int
     name: str
     size: Size
 
 
+class PixelFormat(NamedTuple):
+    format: Literal["RGBA", "RGB", "ARGB", "RGBX", "RGB565"]
+    byte_width: int
+    vc_image_type: int
+    numpy_dtype: Any = numpy.uint8 if HAVE_NUMPY else None
+
+
+def only_if_not_destroyed(func):
+    @wraps(func)
+    def wrapped(self, *args, **kwargs):
+        if self._destroyed:
+            raise DispmanXError(f"{self.__class__.__name__} object has already been destroyed.")
+        return func(self, *args, **kwargs)
+
+    return wrapped
+
+
+PIXEL_FORMATS = {
+    "ARGB": PixelFormat("ARGB", 4, bcm_host.VC_IMAGE_ARGB8888),
+    "RGB": PixelFormat("RGB", 3, bcm_host.VC_IMAGE_RGB888),
+    "RGB565": PixelFormat("RGB565", 2, bcm_host.VC_IMAGE_RGB565, numpy.uint16 if HAVE_NUMPY else None),
+    "RGBA": PixelFormat(
+        "RGBA",
+        4,
+        bcm_host.VC_IMAGE_RGBA32,
+    ),
+    "RGBX": PixelFormat("RGBX", 4, bcm_host.VC_IMAGE_TF_RGBX32),
+}
+
+
 class DispmanX:
+    _buffer: Any
     _display_handle: int
     _display: Display
-    _layer: int
     _has_initialized: ClassVar[bool] = False
+    _layer: int
+    _pixel_format: PixelFormat
     _surface_element_handle: int
     _video_resource_handle: int
 
@@ -51,15 +99,15 @@ class DispmanX:
     def _bcm_host_init(cls) -> None:
         if not cls._has_initialized:
             logger.debug("Initialized bcm_host")
-            bcm.bcm_host_init()
+            bcm_host.bcm_host_init()
             cls._has_initialized = True
 
     def __init__(
         self,
         layer: int = 0,
-        display: Optional[Union[int, Display]] = None,
-        format: Literal["RGBA", "RGB", "ARGB", "RGBX"] = "RGBA",
-        buffer_type: Literal["numpy", "ctypes", "auto"] = "auto",
+        display: Union[None, int, Display] = None,
+        pixel_format: Literal["RGBA", "RGB", "ARGB", "RGBX", "RGB565"] = "RGBA",
+        buffer_type: Literal["auto", "numpy", "ctypes"] = "auto",
     ):
         """The DispmanX Class
 
@@ -83,12 +131,14 @@ class DispmanX:
                 * An [int][] device number of a specific display
                 * A [Display][dispmanx.dispmanx.Display] object, for example,
                     returned by [list_displays()][dispmanx.DispmanX.list_displays])
-            format: Pixel format for the object. Choices:
+            pixel_format: Pixel format for the object. Choices:
 
                 * `'RGBA'` &mdash; 32-bit red, green, blue, and alpha
                 * `'RGB'` &mdash; 24-bit red, green, and blue
                 * `'ARGB'` &mdash; 32-bit alpha, red, green, and blue
                 * `'RGBX'` &mdash; 32-bit red, green, blue and an unused (`X`) byte
+                * `'RGB565'` &mdash; 16-bit red, green, blue packed in RGB565 format
+                    (represented as unsigned 16-bit integers when using [NumPy][numpy])
 
             buffer_type: Type of buffer to write to the display from. Choices:
 
@@ -113,28 +163,18 @@ class DispmanX:
                 of [c_char][ctypes.c_char] depending on the value of the
                 `buffer_type` argument.
             display Display: The display for which this object is attached to
+            pixel_format str: The pixel format for this object.
             size Size: The dimensions of the current display
             width int: The width of the current display
             height int: The height of the current display
         """
-        self._bcm_host_init()
-        self._format = format
+        self._destroyed = False
         self._layer = layer
+        pixel_format_obj = PIXEL_FORMATS.get(pixel_format)
 
-        if format == "RGBA":
-            self._image_type = bcm.VC_IMAGE_RGBA32
-            self._pixel_width = 4
-        elif format == "ARGB":
-            self._image_type = bcm.VC_IMAGE_ARGB8888
-            self._pixel_width = 4
-        elif format == "RGBX":
-            self._image_type = bcm.VC_IMAGE_TF_RGBX32
-            self._pixel_width = 4
-        elif format == "RGB":
-            self._image_type = bcm.VC_IMAGE_RGB888
-            self._pixel_width = 3
-        else:
+        if pixel_format_obj is None:
             raise DispmanXError(f"Invalid pixel format: {format}")
+        self._pixel_format = pixel_format_obj
 
         if buffer_type not in ("numpy", "ctypes", "auto"):
             raise DispmanXError(f"Invalid buffer type: {buffer_type}")
@@ -144,6 +184,8 @@ class DispmanX:
             buffer_type = "numpy" if HAVE_NUMPY else "ctypes"
 
         device_id = display.device_id if isinstance(display, Display) else display
+
+        self._bcm_host_init()
 
         # Select a display (first one by default)
         if device_id is None:
@@ -163,54 +205,66 @@ class DispmanX:
             f" {self._display.size.width}x{self._display.size.height}"
         )
 
-        handle = bcm.vc_dispmanx_display_open(self._display.device_id)
+        handle = bcm_host.vc_dispmanx_display_open(self._display.device_id)
         if handle == 0:
             raise DispmanXRuntimeError(f"Error opening device ID #{self._display.device_id}")
         logger.debug(f"Got display handle: {handle}")
         self._display_handle = handle
 
-        buffer_size = self._display.size.width * self._display.size.height * self._pixel_width
+        buffer_size = self._display.size.width * self._display.size.height * self._pixel_format.byte_width
         if buffer_type == "numpy":
-            array_shape = (self._display.size.height, self._display.size.width, self._pixel_width)
-            self._buffer = numpy.zeros(shape=array_shape, dtype=numpy.uint8)
+            pixel_shape = self._pixel_format.byte_width // self._pixel_format.numpy_dtype().nbytes
+            array_shape = (self._display.size.height, self._display.size.width, pixel_shape)
+            self._buffer = numpy.zeros(shape=array_shape, dtype=self._pixel_format.numpy_dtype)
         else:
-            self._buffer = ct.create_string_buffer(buffer_size)
+            self._buffer = ctypes.create_string_buffer(buffer_size)
         logger.debug(f"Allocated buffer of size {buffer_size} bytes")
 
         self._create_video_resource_handle()
         self._create_surface_element()
 
-    @property
+    def __del__(self):
+        self.destroy()
+
+    @property  # type: ignore
+    @only_if_not_destroyed
     def display(self) -> Display:
         return self._display
 
-    @property
+    @property  # type: ignore
+    @only_if_not_destroyed
     def size(self) -> Size:
         return self._display.size
 
-    @property
+    @property  # type: ignore
+    @only_if_not_destroyed
     def width(self) -> int:
         return self._display.size.width
 
-    @property
+    @property  # type: ignore
+    @only_if_not_destroyed
     def height(self) -> int:
         return self._display.size.height
 
-    @property
-    def buffer(self):
+    @property  # type: ignore
+    @only_if_not_destroyed
+    def buffer(self) -> Any:
         return self._buffer
 
-    @property
-    def format(self) -> Literal["RGBA", "RGB", "ARGB", "RGBX"]:
-        return self._format
+    @property  # type: ignore
+    @only_if_not_destroyed
+    def pixel_format(self) -> Literal["RGBA", "RGB", "ARGB", "RGBX", "RGB565"]:
+        return self._pixel_format.format
 
     def _create_video_resource_handle(self) -> None:
-        unused = ct.c_uint32()
-        handle = bcm.vc_dispmanx_resource_create(
-            self._image_type,
+        self._bcm_host_init()
+
+        unused = ctypes.c_uint32()
+        handle = bcm_host.vc_dispmanx_resource_create(
+            self._pixel_format.vc_image_type,
             self._display.size.width,
             self._display.size.height,
-            ct.byref(unused),
+            ctypes.byref(unused),
         )
         if handle == 0:
             raise DispmanXRuntimeError("Error creating image resource")
@@ -219,46 +273,49 @@ class DispmanX:
         logger.debug(f"Created video resource handle: {handle}")
 
     def _create_surface_element(self) -> None:
-        src_rect = bcm.VC_RECT_T(width=self.display.size.width << 16, height=self.display.size.height << 16, x=0, y=0)
-        self._dest_rect = bcm.VC_RECT_T(width=self.display.size.width, height=self.display.size.height, x=0, y=0)
-        alpha = bcm.VC_DISPMANX_ALPHA_T(flags=bcm.DISPMANX_FLAGS_ALPHA_FROM_SOURCE, opacity=255, mask=0)
+        src_width, src_height = self.display.size.width << 16, self.display.size.height << 16
+        src_rect = bcm_host.VC_RECT_T(width=src_width, height=src_height, x=0, y=0)
+        self._dest_rect = bcm_host.VC_RECT_T(width=self.display.size.width, height=self.display.size.height, x=0, y=0)
+        alpha = bcm_host.VC_DISPMANX_ALPHA_T(flags=bcm_host.DISPMANX_FLAGS_ALPHA_FROM_SOURCE, opacity=255, mask=0)
 
         with self._start_and_submit_update() as update_handle:
-            self._surface_element_handle = bcm.vc_dispmanx_element_add(
+            self._surface_element_handle = bcm_host.vc_dispmanx_element_add(
                 update_handle,
                 self._display_handle,
                 self._layer,
-                ct.byref(self._dest_rect),
+                ctypes.byref(self._dest_rect),
                 self._video_resource_handle,
-                ct.byref(src_rect),
-                bcm.DISPMANX_PROTECTION_NONE,
-                ct.byref(alpha),
+                ctypes.byref(src_rect),
+                bcm_host.DISPMANX_PROTECTION_NONE,
+                ctypes.byref(alpha),
                 None,
-                bcm.DISPMANX_NO_ROTATE,
+                bcm_host.DISPMANX_NO_ROTATE,
             )
             if self._surface_element_handle == 0:
                 raise DispmanXRuntimeError("Couldn't create surface element")
             logger.debug(f"Got surface element handle: {self._surface_element_handle}")
 
+    @only_if_not_destroyed
     def update(self) -> None:
         """Update the pixels based on what's in the buffer
 
         Raises:
-            DispmanXRuntimeError: Raises if there's an error writing to the video
-                memory
-            """
+            DispmanXRuntimeError: Raises if there's an error writing to the
+                video memory
+        """
+
         if HAVE_NUMPY:
             buffer = numpy.ctypeslib.as_ctypes(self._buffer)
         else:
-            buffer = ct.byref(self._buffer)
+            buffer = ctypes.byref(self._buffer)
 
         if (
-            bcm.vc_dispmanx_resource_write_data(
+            bcm_host.vc_dispmanx_resource_write_data(
                 self._video_resource_handle,
-                self._image_type,
-                self.display.size.width * self._pixel_width,
+                self._pixel_format.vc_image_type,
+                self.display.size.width * self._pixel_format.byte_width,
                 buffer,
-                ct.byref(self._dest_rect),
+                ctypes.byref(self._dest_rect),
             )
             != 0
         ):
@@ -269,14 +326,14 @@ class DispmanX:
 
     @contextmanager
     def _start_and_submit_update(self) -> Generator[int, None, None]:
-        update_handle = bcm.vc_dispmanx_update_start(0)
+        update_handle = bcm_host.vc_dispmanx_update_start(0)
 
-        if update_handle == bcm.DISPMANX_NO_HANDLE:
+        if update_handle == bcm_host.DISPMANX_NO_HANDLE:
             raise DispmanXRuntimeError("Couldn't get update handle")
 
         yield update_handle
 
-        if bcm.vc_dispmanx_update_submit_sync(update_handle) != 0:
+        if bcm_host.vc_dispmanx_update_submit_sync(update_handle) != 0:
             raise DispmanXRuntimeError("Error submitting update")
 
     @classmethod
@@ -297,9 +354,9 @@ class DispmanX:
                 error while getting the list of displays.
         """
         cls._bcm_host_init()
-        devices = bcm.TV_ATTACHED_DEVICES_T()
+        devices = bcm_host.TV_ATTACHED_DEVICES_T()
 
-        if bcm.vc_tv_get_attached_devices(ct.byref(devices)) != 0:
+        if bcm_host.vc_tv_get_attached_devices(ctypes.byref(devices)) != 0:
             raise DispmanXRuntimeError("Error getting attached devices")
 
         response = []
@@ -329,8 +386,25 @@ class DispmanX:
     @classmethod
     def _get_display_size(cls, display_id) -> Size:
         cls._bcm_host_init()
-        width, height = ct.c_uint32(), ct.c_uint32()
-        if bcm.graphics_get_display_size(display_id, ct.byref(width), ct.byref(height)) < 0:
+        width, height = ctypes.c_uint32(), ctypes.c_uint32()
+        if bcm_host.graphics_get_display_size(display_id, ctypes.byref(width), ctypes.byref(height)) < 0:
             raise DispmanXRuntimeError(f"Error getting display #{display_id} size")
 
         return Size(width.value, height.value)
+
+    def destroy(self) -> None:
+        """Destroy this DispmanX object
+
+        Raises:
+            DispmanXRuntimeError: Raised if there's an error destroying any of
+                the underlying resources for the object
+        """
+        if not self._destroyed:
+            with self._start_and_submit_update() as update_handle:
+                if bcm_host.vc_dispmanx_element_remove(update_handle, self._surface_element_handle) != 0:
+                    raise DispmanXRuntimeError("Couldn't destroy surface element")
+
+            if bcm_host.vc_dispmanx_resource_delete(self._video_resource_handle) != 0:
+                raise DispmanXRuntimeError("Error destroying image resource")
+
+            self._destroyed = True

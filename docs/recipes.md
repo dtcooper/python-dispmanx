@@ -5,7 +5,8 @@ title: Recipes
 # Code Recipes
 
 Below are a few code recipes for [pygame], [Pillow], and [Pycairo] to get you
-started.
+started. If you need help installing the library, check out the
+[Quickstart][quickstart] section!
 
 ## [pygame] Example
 

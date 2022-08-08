@@ -5,6 +5,7 @@ class DispmanXRuntimeError(RuntimeError):
     objects you've instantiated when one of these exceptions gets raises. Or,
     your program should cleanly exit.
     """
+
     pass
 
 
@@ -13,4 +14,5 @@ class DispmanXError(Exception):
 
     Likely a programmer error. You can try whatever you were doing again and
     correcting the offending behavior."""
+
     pass

@@ -4,7 +4,7 @@ title: API Docs
 
 # API Documentation
 
-The main entrypoint for the library is the [DispmanX][dispmanx.DispmanX] class
+The main entrypoint for the library is the [DispmanX class][dispmanx.DispmanX]
 as described below.
 
 ## ::: dispmanx.DispmanX
