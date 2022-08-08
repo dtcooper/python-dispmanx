@@ -3,11 +3,11 @@ from dispmanx import DispmanX
 
 display = DispmanX(pixel_format="RGB565")
 
-buffer = display.buffer
-high = numpy.iinfo(buffer.dtype).max + 1
+buf = display.buffer
+high = numpy.iinfo(buf.dtype).max + 1
 
 while True:
     # Generate random colors, simulating static
-    static = numpy.random.randint(0, high, buffer.size, buffer.dtype).reshape(buffer.shape)
-    numpy.copyto(buffer, static)
+    static = numpy.random.randint(0, high, buf.size, buf.dtype).reshape(buf.shape)
+    numpy.copyto(buf, static)
     display.update()
