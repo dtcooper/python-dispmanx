@@ -97,7 +97,7 @@ menus, "channels," and subtitles[^3].
 ## What's Next?
 
 * Check out some [code recipes](recipes.md) that will show you how to use
-    DispmanX with [pygame], [Pillow], and [Pycairo].
+    DispmanX with [pygame], [Pillow], [Pycairo], plain [NumPy][numpy].
 * Head over to the [API documentation](api.md) and read about the
     [DispmanX class][dispmanx.DispmanX], the main entrypoint for this package.
 * Check out some [additional information](info.md) about this package.
