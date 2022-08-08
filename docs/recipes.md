@@ -47,7 +47,7 @@ Then run this program,
     This is inherently slow, so you're not going to get as high frame rates as
     in the [pygame] example.
 
-    If you know a way to do in-place modification of numpy arrays with Pillow, open
+    If you know a way to do in-place modification of numpy arrays with Pillow,
     let me know by filing a GitHub issue!
 
 ## [Pycairo] Example
