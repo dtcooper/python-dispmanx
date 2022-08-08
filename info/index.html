@@ -531,11 +531,11 @@ tested,</p>
 </dd>
 </dl>
 <p>If you're using an older version Python, Raspberry Pi OS, and/or a different OS
-entirely, you can always use <a href="https://www.docker.com/">Docker</a> you can use any version of the Pi. See the
+entirely, you can always use <a href="https://www.docker.com/">Docker</a> on any supported version of the Pi. See the
 section on <a class="autorefs autorefs-internal" href="#docker-and-compose">Docker and Compose</a> below.</p>
 <h2 id="ctypes-and-bcm_hostso"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a> and <code>bcm_host.so</code><a class="headerlink" href="#ctypes-and-bcm_hostso" title="Permanent link">←</a></h2>
 <p>While Python DispmanX is written completely in Python, it uses Python's included
-[ctypes] library to perform "foreign function calls" to <code>bcm_host.so</code>. In short
+[ctypes] library to perform "foreign function calls" to <code>bcm_host.so</code>. In short,
 it calls the C library included with Raspberry Pi OS to interface with the
 DispmanX layer directly.</p>
 <p>The library <code>bcm_host.so</code> is available through the <code>libraspberrypi0</code> Debian
@@ -543,7 +543,7 @@ package, which should have come installed on your Pi if you used Raspberry Pi
 OS. If that's not available, you can always use <a href="https://www.docker.com/">Docker</a> following the
 instructions in the <a class="autorefs autorefs-internal" href="#docker-and-compose">Docker and Compose</a> section below.</p>
 <h2 id="docker-and-compose"><a href="https://www.docker.com/">Docker</a> and <a href="https://docs.docker.com/compose/">Compose</a><a class="headerlink" href="#docker-and-compose" title="Permanent link">←</a></h2>
-<p>Both <a href="https://www.docker.com/">Docker</a> and <a href="https://docs.docker.com/compose/">Docker Compose</a> work great. There actually how I run
+<p>Both <a href="https://www.docker.com/">Docker</a> and <a href="https://docs.docker.com/compose/">Docker Compose</a> work great. They're actually how I run
 the library. Details below.</p>
 <h3 id="using-docker">Using <a href="https://www.docker.com/">Docker</a><a class="headerlink" href="#using-docker" title="Permanent link">←</a></h3>
 <p>If the version of <a href="https://www.raspberrypi.com/software/">Raspberry Pi OS</a> that you're using isn't supported by
@@ -553,9 +553,9 @@ always use <a href="https://www.docker.com/">Docker</a>. Docker is supported on 
 <code>libraspberrypi0</code> package as described above. So, you'll need to either add the
 <a href="https://www.raspbian.org/RaspbianRepository">"Raspbian Repository"</a>, or use my
 <a href="https://github.com/dtcooper/raspberrypi-os-docker">minimal Raspberry Pi OS base containers</a>. Three variants
-are provided.</p>
+that will work are provided.</p>
 <p>The device <code>/dev/vchiq</code> needs to be exposed to container. For the Debian image,
-you'll need to install pip yourself. Three images are provided.</p>
+you'll need to install pip yourself. Three images are listed in the table below.</p>
 <table>
 <thead>
 <tr>
@@ -579,7 +579,7 @@ you'll need to install pip yourself. Three images are provided.</p>
 </tbody>
 </table>
 <h3 id="using-compose">Using <a href="https://docs.docker.com/compose/">Compose</a><a class="headerlink" href="#using-compose" title="Permanent link">←</a></h3>
-<p>Similarly, using <a href="https://docs.docker.com/compose/">Docker Compose</a> works great. You'll similarly need to
+<p>Using <a href="https://docs.docker.com/compose/">Docker Compose</a> also works great. You'll need to similarly
 expose the <code>/dev/vchiq</code> device, however. Here's a sample <code>docker-compose.yml</code>
 file,</p>
 <div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"></span>
@@ -594,13 +594,13 @@ of the main ones are described below.</p>
 <h3 id="pydispmanx"><a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a><a class="headerlink" href="#pydispmanx" title="Permanent link">←</a></h3>
 <p>First and foremost, let me acknowledge the work <a href="https://twitter.com/eclispe">Tim Clark</a> put into
 <a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a>.</p>
-<p><a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a> is another Python library <em>is</em> available that functions somewhat
+<p><a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a> is another Python library available that functions somewhat
 similarly. Honestly, it's great and I would recommend it! I owe a debt of
 gratitude to its author, for two reasons,</p>
 <ol>
 <li>First and foremost, showing me that interfacing with the Pi's DispmanX API
    via Python is possible; and</li>
-<li>Being available to peep into his source code.</li>
+<li>Being available to peep into its source code.</li>
 </ol>
 <p>Some reasons I've chosen to re-write from scratch are:</p>
 <ul>
