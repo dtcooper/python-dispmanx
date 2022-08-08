@@ -1,4 +1,4 @@
-FROM ghcr.io/dtcooper/raspberrypi-os:python3.9
+FROM dtcooper/raspberrypi-os:python3.9
 
 ARG POETRY_VERSION=1.1.14
 

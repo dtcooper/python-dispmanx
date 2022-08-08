@@ -9,7 +9,7 @@ nav:
   - index.md
   - recipes.md
   - api.md
-  - info.md
+  - more-info.md
   - license.md
 extra_css:
   - assets/extra.css

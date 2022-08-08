@@ -1,3 +1,4 @@
+import time
 import numpy
 from dispmanx import DispmanX
 
@@ -11,3 +12,4 @@ while True:
     static = numpy.random.randint(0, high, size=buf.size, dtype=buf.dtype).reshape(buf.shape)
     numpy.copyto(buf, static)
     display.update()
+    time.sleep(0.0135)

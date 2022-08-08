@@ -6,7 +6,7 @@ title: Recipes
 
 Below are a few code recipes for [pygame], [Pillow], [Pycairo], and
 plain [NumPy][numpy] to get you started. If you're unsure how to install this
-library, check out the [Quickstart][quickstart] section.
+library, check out the [installation section][installation].
 
 ## [pygame] Example
 

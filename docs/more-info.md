@@ -37,9 +37,9 @@ section on [Docker and Compose][docker-and-compose] below.
 ## [ctypes][] and `bcm_host.so`
 
 While Python DispmanX is written completely in Python, it uses Python's included
-[ctypes] library to perform "foreign function calls" to `bcm_host.so`. In short,
-it calls the C library included with Raspberry Pi OS to interface with the
-DispmanX layer directly.
+[ctypes][] library to perform "foreign function calls" to `bcm_host.so`. In
+short, it calls the C library included with Raspberry Pi OS to interface with
+the DispmanX layer directly.
 
 The library `bcm_host.so` is available through the `libraspberrypi0` Debian
 package, which should have come installed on your Pi if you used Raspberry Pi
@@ -67,11 +67,21 @@ that will work are provided.
 The device `/dev/vchiq` needs to be exposed to container. For the Debian image,
 you'll need to install pip yourself. Three images are listed in the table below.
 
-| Description       | Image Name                                   |
-|------------------:|:---------------------------------------------|
-| Python 3.9        | `ghcr.io/dtcooper/raspberrypi-os:python3.9`  |
-| Python 3.10       | `ghcr.io/dtcooper/raspberrypi-os:python3.10` |
-| Debian (Bullseye) | `ghcr.io/dtcooper/raspberrypi-os:bullseye`   |
+| Description       | Image Name                           |
+|------------------:|:-------------------------------------|
+| Python 3.9        | `dtcooper/raspberrypi-os:python3.9`  |
+| Python 3.10       | `dtcooper/raspberrypi-os:python3.10` |
+| Debian (Bullseye) | `dtcooper/raspberrypi-os:bullseye`   |
+
+For example using the Python 3.9 container with a script called `test.py` in
+your current directory run this at the command line,
+
+```bash
+docker run -it -v "./test.py:/test.py" --device /dev/vchiq:/dev/vchiq bash
+# Now in the container
+pip install dispmanx[numpy]
+python /test.py
+```
 
 ### Using [Compose]
 
@@ -82,7 +92,7 @@ file,
 ```yaml title="docker-compose.yml"
 services:
   dispmanx:
-    #image: <Your image based on ghcr.io/dtcooper/raspberrypi-os:python3.9>
+    #image: <Your image based on dtcooper/raspberrypi-os:python3.9>
     devices:
       - /dev/vchiq:/dev/vchiq
 ```
@@ -106,7 +116,8 @@ gratitude to its author, for two reasons,
    via Python is possible; and
 2. Being available to peep into its source code.
 
-Some reasons I've chosen to re-write from scratch are:
+While it's perhaps the best alternative to this project, some reasons I've
+chosen to re-write from scratch are:
 
  * To provide a [ctypes][] pure Python interface;
  * To provide a more complete interface to DispmanX;
@@ -116,7 +127,7 @@ Some reasons I've chosen to re-write from scratch are:
  * [PyDispmanx] appears to be an unstable work in progress. For
    example, by its own author's admission in the project README, he says
    _"\[he\] probably wouldn't install this system wide yet";_ and
- * Oh, _writing code is fun!_
+ * _Writing code is fun!_
 
 ### [raspidmx]
 
@@ -127,10 +138,10 @@ language example programs were by a developer named
 provided a set of "programs [that could] be used as a starting point for anyone
 wanting to make use of DispmanX."
 
-Some of the common code from [raspidmx] is the underlying code that
-drives [PyDispmanx]. I owe a debt of gratitude to its author, since
-peeing into [raspidmx]'s source tree is what helped figure out how to
-call the DispmanX APIs from this Python package.
+Some of the common code from [raspidmx] is the underlying code that drives
+[PyDispmanx]. I owe a debt of gratitude to its author, since peeping into
+[raspidmx]'s source tree is what helped figure out how to call the DispmanX APIs
+from Python.
 
 ### [picamera]
 

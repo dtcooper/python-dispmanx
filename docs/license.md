@@ -6,7 +6,7 @@ title: Author & License
 
 ## Author
 
-Hi! I'm David Cooper. I'm the author of Python DispmanX. You can reach me for
+Hi! I'm David Cooper. I'm the author of Python DispmanX. I'm reachable for
 feedback or questions at <david@jew.pizza>.
 
 I'm a software engineer :floppy_disk: turned radio personality :radio:. I used
@@ -18,7 +18,7 @@ Find out more or listen :ear: at
 
 ## License
 
-Python DispmanX is offered under the permissive [MIT][mit] license below,
+Python DispmanX is offered under the permissive [MIT license][mit] below,
 
 ```
 --8<-- "LICENSE"
