@@ -24,9 +24,9 @@ Then run this program,
 
 ## [Pillow] Example
 
-!!! tip "[NumPy] Required"
+!!! tip "[NumPy][numpy] Required"
     For this example to work correctly, ensure you've installed
-    [NumPy][]. The easiest way to do that with [pip] is:
+    [NumPy][numpy]. The easiest way to do that with [pip] is:
     `#!bash pip install dispmanx[numpy]`
 
 First install [Pillow],
@@ -64,11 +64,24 @@ Then run this program,
 --8<-- "pycairo_test.py"
 ```
 
+## [NumPy][numpy] Example
+
+All you need is [NumPy][numpy] for this one. First, install it
+
+```bash
+pip install numpy
+```
+
+Then run this program to create a fake static effect,
+
+```python title="numpy_static.py"
+--8<-- "numpy_static.py"
+```
+
 ## What's Next?
 
 Now that you're an expert, check out the [API documentation](api.md).
 
-[numpy]: https://numpy.org/doc/stable/
 [pillow]: https://pillow.readthedocs.io/
 [pip]: https://pip.pypa.io/
 [pycairo]: https://pycairo.readthedocs.io/
