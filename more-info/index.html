@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://dtcooper.github.io/python-dispmanx/info/">
+        <link rel="canonical" href="https://dtcooper.github.io/python-dispmanx/more-info/">
       
       <link rel="icon" href="../assets/favicon.svg">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.3.9">
@@ -535,9 +535,9 @@ entirely, you can always use <a href="https://www.docker.com/">Docker</a> on any
 section on <a class="autorefs autorefs-internal" href="#docker-and-compose">Docker and Compose</a> below.</p>
 <h2 id="ctypes-and-bcm_hostso"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a> and <code>bcm_host.so</code><a class="headerlink" href="#ctypes-and-bcm_hostso" title="Permanent link">←</a></h2>
 <p>While Python DispmanX is written completely in Python, it uses Python's included
-[ctypes] library to perform "foreign function calls" to <code>bcm_host.so</code>. In short,
-it calls the C library included with Raspberry Pi OS to interface with the
-DispmanX layer directly.</p>
+<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a> library to perform "foreign function calls" to <code>bcm_host.so</code>. In
+short, it calls the C library included with Raspberry Pi OS to interface with
+the DispmanX layer directly.</p>
 <p>The library <code>bcm_host.so</code> is available through the <code>libraspberrypi0</code> Debian
 package, which should have come installed on your Pi if you used Raspberry Pi
 OS. If that's not available, you can always use <a href="https://www.docker.com/">Docker</a> following the
@@ -566,27 +566,34 @@ you'll need to install pip yourself. Three images are listed in the table below.
 <tbody>
 <tr>
 <td align="right">Python 3.9</td>
-<td align="left"><code>ghcr.io/dtcooper/raspberrypi-os:python3.9</code></td>
+<td align="left"><code>dtcooper/raspberrypi-os:python3.9</code></td>
 </tr>
 <tr>
 <td align="right">Python 3.10</td>
-<td align="left"><code>ghcr.io/dtcooper/raspberrypi-os:python3.10</code></td>
+<td align="left"><code>dtcooper/raspberrypi-os:python3.10</code></td>
 </tr>
 <tr>
 <td align="right">Debian (Bullseye)</td>
-<td align="left"><code>ghcr.io/dtcooper/raspberrypi-os:bullseye</code></td>
+<td align="left"><code>dtcooper/raspberrypi-os:bullseye</code></td>
 </tr>
 </tbody>
 </table>
+<p>For example using the Python 3.9 container with a script called <code>test.py</code> in
+your current directory run this at the command line,</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker run -it -v <span class="s2">&quot;./test.py:/test.py&quot;</span> --device /dev/vchiq:/dev/vchiq bash
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Now in the container</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>pip install dispmanx<span class="o">[</span>numpy<span class="o">]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>python /test.py
+</code></pre></div>
 <h3 id="using-compose">Using <a href="https://docs.docker.com/compose/">Compose</a><a class="headerlink" href="#using-compose" title="Permanent link">←</a></h3>
 <p>Using <a href="https://docs.docker.com/compose/">Docker Compose</a> also works great. You'll need to similarly
 expose the <code>/dev/vchiq</code> device, however. Here's a sample <code>docker-compose.yml</code>
 file,</p>
-<div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"></span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">dispmanx</span><span class="p">:</span><span class="w"></span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="c1">#image: &lt;Your image based on ghcr.io/dtcooper/raspberrypi-os:python3.9&gt;</span><span class="w"></span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/vchiq:/dev/vchiq</span><span class="w"></span>
+<div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">dispmanx</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="c1">#image: &lt;Your image based on dtcooper/raspberrypi-os:python3.9&gt;</span><span class="w"></span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/vchiq:/dev/vchiq</span><span class="w"></span>
 </code></pre></div>
 <h2 id="acknowledgements">Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permanent link">←</a></h2>
 <p>Several projects were used as reference in development of Python DispmanX. Some
@@ -602,7 +609,8 @@ gratitude to its author, for two reasons,</p>
    via Python is possible; and</li>
 <li>Being available to peep into its source code.</li>
 </ol>
-<p>Some reasons I've chosen to re-write from scratch are:</p>
+<p>While it's perhaps the best alternative to this project, some reasons I've
+chosen to re-write from scratch are:</p>
 <ul>
 <li>To provide a <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a> pure Python interface;</li>
 <li>To provide a more complete interface to DispmanX;</li>
@@ -612,7 +620,7 @@ gratitude to its author, for two reasons,</p>
 <li><a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a> appears to be an unstable work in progress. For
    example, by its own author's admission in the project README, he says
    <em>"[he] probably wouldn't install this system wide yet";</em> and</li>
-<li>Oh, <em>writing code is fun!</em></li>
+<li><em>Writing code is fun!</em></li>
 </ul>
 <h3 id="raspidmx"><a href="https://github.com/andrewfrommelbourne/raspidmx">raspidmx</a><a class="headerlink" href="#raspidmx" title="Permanent link">←</a></h3>
 <p>The Broadcom hardware interface library which provides the DispmanX APIs is very
@@ -621,10 +629,10 @@ language example programs were by a developer named
 <a href="https://github.com/andrewfrommelbourne">Andrew Duncan</a>. He calls the suite <a href="https://github.com/andrewfrommelbourne/raspidmx">raspidmx</a>. Andrew
 provided a set of "programs [that could] be used as a starting point for anyone
 wanting to make use of DispmanX."</p>
-<p>Some of the common code from <a href="https://github.com/andrewfrommelbourne/raspidmx">raspidmx</a> is the underlying code that
-drives <a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a>. I owe a debt of gratitude to its author, since
-peeing into <a href="https://github.com/andrewfrommelbourne/raspidmx">raspidmx</a>'s source tree is what helped figure out how to
-call the DispmanX APIs from this Python package.</p>
+<p>Some of the common code from <a href="https://github.com/andrewfrommelbourne/raspidmx">raspidmx</a> is the underlying code that drives
+<a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a>. I owe a debt of gratitude to its author, since peeping into
+<a href="https://github.com/andrewfrommelbourne/raspidmx">raspidmx</a>'s source tree is what helped figure out how to call the DispmanX APIs
+from Python.</p>
 <h3 id="picamera"><a href="https://picamera.readthedocs.io/">picamera</a><a class="headerlink" href="#picamera" title="Permanent link">←</a></h3>
 <p>The <a href="https://picamera.readthedocs.io/">picamera</a> Python library interfaces with the
 <a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera">Pi's Camera Module</a>. Its source code contains several parts
