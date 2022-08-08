@@ -562,12 +562,12 @@ potential use cases.</p>
     pixels with arbitrary imaging tool kits like <a href="https://pillow.readthedocs.io/">Pillow</a> or <a href="https://pycairo.readthedocs.io/">Cairo</a>.</li>
 </ul>
 <p>My use case is retro style CRT TV hooked up to a Pi using the Pi-specific video
-player <a href="https://github.com/popcornmix/omxplayer">omxplayer</a> complete with and semi-transparent overlays for
+player <a href="https://github.com/popcornmix/omxplayer">omxplayer</a> complete with semi-transparent overlays for
 menus, "channels," and subtitles<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>.</p>
 <h2 id="whats-next">What's Next?<a class="headerlink" href="#whats-next" title="Permanent link">←</a></h2>
 <ul>
 <li>Check out some <a href="recipes/">code recipes</a> that will show you how to use
-    DispmanX with <a href="https://www.pygame.org/docs/">pygame</a>, <a href="https://pillow.readthedocs.io/">Pillow</a>, <a href="https://pycairo.readthedocs.io/">Pycairo</a>, plain <a class="autorefs autorefs-external" href="https://docs.scipy.org/doc/numpy/reference/index.html#module-numpy">NumPy</a>.</li>
+    DispmanX with <a href="https://www.pygame.org/docs/">pygame</a>, <a href="https://pillow.readthedocs.io/">Pillow</a>, <a href="https://pycairo.readthedocs.io/">Pycairo</a>, and plain <a class="autorefs autorefs-external" href="https://docs.scipy.org/doc/numpy/reference/index.html#module-numpy">NumPy</a>.</li>
 <li>Head over to the <a href="api/">API documentation</a> and read about the
     <a class="autorefs autorefs-internal" href="api/#dispmanx.DispmanX">DispmanX class</a>, the main entrypoint for this package.</li>
 <li>Check out some <a href="info/">additional information</a> about this package.</li>
@@ -577,7 +577,7 @@ menus, "channels," and subtitles<sup id="fnref:3"><a class="footnote-ref" href="
 <ol>
 <li id="fn:1">
 <p>I say "pure Python" however this package uses Python's included <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a>
-library perform "foreign function calls" to <code>bcm_host.so</code> &mdash; a C
+library to perform "foreign function calls" to <code>bcm_host.so</code> &mdash; a C
 library included with Raspberry Pi OS to interface with the DispmanX layer
 directly.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
@@ -585,9 +585,9 @@ directly.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to f
 <p>Fun fact, transparent overlays is the reason I wrote this package.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:3">
-<p>While <a href="https://github.com/popcornmix/omxplayer">omxplayer</a> does supports subtitle, but they
+<p>While <a href="https://github.com/popcornmix/omxplayer">omxplayer</a> does support subtitles, they
 <a href="https://github.com/popcornmix/omxplayer/issues/736">don't seem to be working on the Raspberry Pi 4B</a>.
-And anyways, I wanted to render custom subtitles anyway.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+And anyways, I wanted to render custom subtitles.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
