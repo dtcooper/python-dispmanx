@@ -59,7 +59,7 @@ class PixelFormat(NamedTuple):
     format: Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGBA16", "RGB565"]
     byte_width: int
     vc_image_type: int
-    numpy_dtype: Any = numpy.uint8 if HAVE_NUMPY else None
+    numpy_dtype_name: str = "uint8"
 
 
 def only_if_not_destroyed(func):
@@ -78,8 +78,8 @@ PIXEL_FORMATS = {
     "RGBA": PixelFormat("RGBA", 4, bcm_host.VC_IMAGE_RGBA32),
     "RGBX": PixelFormat("RGBX", 4, bcm_host.VC_IMAGE_RGBX8888),
     "XRGB": PixelFormat("XRGB", 4, bcm_host.VC_IMAGE_XRGB8888),
-    "RGB565": PixelFormat("RGB565", 2, bcm_host.VC_IMAGE_RGB565, numpy.uint16 if HAVE_NUMPY else None),
-    "RGBA16": PixelFormat("RGBA16", 2, bcm_host.VC_IMAGE_RGBA16, numpy.uint16 if HAVE_NUMPY else None)
+    "RGB565": PixelFormat("RGB565", 2, bcm_host.VC_IMAGE_RGB565, "uint16"),
+    "RGBA16": PixelFormat("RGBA16", 2, bcm_host.VC_IMAGE_RGBA16, "uint16"),
 }
 
 
@@ -217,9 +217,10 @@ class DispmanX:
 
         buffer_size = self._display.size.width * self._display.size.height * self._pixel_format.byte_width
         if buffer_type == "numpy":
-            pixel_shape = self._pixel_format.byte_width // self._pixel_format.numpy_dtype().nbytes
+            dtype = numpy.dtype(self._pixel_format.numpy_dtype_name).type
+            pixel_shape = self._pixel_format.byte_width // dtype().nbytes
             array_shape = (self._display.size.height, self._display.size.width, pixel_shape)
-            self._buffer = numpy.zeros(shape=array_shape, dtype=self._pixel_format.numpy_dtype)
+            self._buffer = numpy.zeros(shape=array_shape, dtype=dtype)
         else:
             self._buffer = ctypes.create_string_buffer(buffer_size)
         logger.debug(f"Allocated buffer of size {buffer_size} bytes")
