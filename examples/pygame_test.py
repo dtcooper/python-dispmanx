@@ -6,7 +6,7 @@ import sys
 def random_color_with_alpha():
     return tuple(randint(0, 0xFF) for _ in range(3)) + (randint(0x44, 0xFF),)
 
-display = DispmanX(pixel_format="RGBA" if len(sys.argv) <= 1 else sys.argv[1])
+display = DispmanX(pixel_format="RGBA")
 surface = pygame.image.frombuffer(display.buffer, display.size, display.pixel_format)
 clock = pygame.time.Clock()
 
