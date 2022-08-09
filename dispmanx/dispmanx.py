@@ -137,7 +137,7 @@ class DispmanX:
                 * `'RGBA'` &mdash; 32-bit red, green, blue, and alpha
                 * `'RGBX'` &mdash; 32-bit red, green, blue and an unused (`X`) byte
                 * `'XRGB'` &mdash; 32-bit an unused (`X`) byte red, green, and blue
-                * `'RGB16'` &mdash; 16-bit red, green, blue and alpha packed as
+                * `'RGBA16'` &mdash; 16-bit red, green, blue and alpha packed as
                     4 bits per channel (represented as unsigned 16-bit integers
                     when using [NumPy][numpy])
                 * `'RGB565'` &mdash; 16-bit red, green, blue packed as follows:
