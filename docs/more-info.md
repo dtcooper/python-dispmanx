@@ -4,8 +4,8 @@ title: Additional Info
 
 # Additional Information
 
-Below is more information about the DispmanX for Python library, including
-what's supported, how to install the necessary library on your Pi, and some
+Below is more information about the Python DispmanX library, including
+what's supported, how to install the necessary requirements (`bcm_host.so`), and some
 acknowledgements.
 
 ## Python, OS and Device Version Support
@@ -17,10 +17,10 @@ OS Support:
 
 Python Version
 :   The minimum version of Python supported is 3.9. That's the default version
-    installed on [Raspberry Pi OS][pi-os].
+    installed on the latest [Raspberry Pi OS][pi-os] (Bullseye).
 
 Raspberry Pi Versions
-:   This library should work on any versions of the Pi, but I've specifically
+:   This library _should_ work on any version of the Pi, but I've specifically
     tested,
 
     1. Raspberry Pi 4 B
@@ -29,9 +29,9 @@ Raspberry Pi Versions
     4. Raspberry Pi 2
     5. Raspberry Pi B
 
-If you're using an older version Python, Raspberry Pi OS, and/or a different OS
-entirely, you can always use [Docker] on any supported version of the Pi. See the
-section on [Docker and Compose][docker-and-compose] below.
+If you're using an older version of Python, Raspberry Pi OS, and/or a different OS
+entirely, you can always use [Docker] on your Pi. See the section on
+[Docker and Compose][docker-and-compose] below.
 
 
 ## [ctypes][] and `bcm_host.so`
@@ -73,7 +73,7 @@ you'll need to install pip yourself. Three images are listed in the table below.
 | Python 3.10       | `dtcooper/raspberrypi-os:python3.10` |
 | Debian (Bullseye) | `dtcooper/raspberrypi-os:bullseye`   |
 
-For example using the Python 3.9 container with a script called `test.py` in
+For example to use the Python 3.9 container with a script called `test.py` in
 your current directory run this at the command line,
 
 ```bash
@@ -104,12 +104,12 @@ services:
 
 ## Acknowledgements
 
-Several projects were used as reference in development of Python DispmanX. Some
+Several projects were used as reference in the development of Python DispmanX. Some
 of the main ones are described below.
 
 ### [PyDispmanx]
 
-First and foremost, let me acknowledge the work [Tim Clark] put into
+First and foremost, let me acknowledge the great work [Tim Clark] put into
 [PyDispmanx].
 
 [PyDispmanx] is another Python library available that functions somewhat
