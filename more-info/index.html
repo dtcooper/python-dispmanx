@@ -587,10 +587,14 @@ you'll need to install pip yourself. Three images are listed in the table below.
 </table>
 <p>For example using the Python 3.9 container with a script called <code>test.py</code> in
 your current directory run this at the command line,</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker run -it -v <span class="s2">&quot;./test.py:/test.py&quot;</span> --device /dev/vchiq:/dev/vchiq bash
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Now in the container</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>pip install dispmanx<span class="o">[</span>numpy<span class="o">]</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>python /test.py
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker run -it <span class="se">\</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    -v <span class="s2">&quot;./test.py:/test.py&quot;</span> <span class="se">\</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    --device /dev/vchiq:/dev/vchiq <span class="se">\</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    dtcooper/raspberrypi-os:python3.9 <span class="se">\</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  bash
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Now in the container</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>pip install dispmanx<span class="o">[</span>numpy<span class="o">]</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python /test.py
 </code></pre></div>
 <h3 id="using-compose">Using <a href="https://docs.docker.com/compose/">Compose</a><a class="headerlink" href="#using-compose" title="Permanent link">←</a></h3>
 <p>Using <a href="https://docs.docker.com/compose/">Docker Compose</a> also works great. You'll need to similarly
