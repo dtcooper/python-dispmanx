@@ -1,8 +1,9 @@
 import time
 import numpy
 from dispmanx import DispmanX
+import sys
 
-display = DispmanX(pixel_format="RGB565")
+display = DispmanX(pixel_format="RGB565" if len(sys.argv) <=1 else sys.argv[1])
 
 buf = display.buffer
 high = numpy.iinfo(buf.dtype).max + 1

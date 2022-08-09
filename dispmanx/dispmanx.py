@@ -56,7 +56,7 @@ class Display(NamedTuple):
 
 
 class PixelFormat(NamedTuple):
-    format: Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGB565"]
+    format: Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGBA16", "RGB565"]
     byte_width: int
     vc_image_type: int
     numpy_dtype: Any = numpy.uint8 if HAVE_NUMPY else None
@@ -79,6 +79,7 @@ PIXEL_FORMATS = {
     "RGBX": PixelFormat("RGBX", 4, bcm_host.VC_IMAGE_RGBX8888),
     "XRGB": PixelFormat("XRGB", 4, bcm_host.VC_IMAGE_XRGB8888),
     "RGB565": PixelFormat("RGB565", 2, bcm_host.VC_IMAGE_RGB565, numpy.uint16 if HAVE_NUMPY else None),
+    "RGBA16": PixelFormat("RGBA16", 2, bcm_host.VC_IMAGE_RGBA16, numpy.uint16 if HAVE_NUMPY else None)
 }
 
 
@@ -103,7 +104,7 @@ class DispmanX:
         self,
         layer: int = 0,
         display: Union[None, int, Display] = None,
-        pixel_format: Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGB565"] = "RGBA",
+        pixel_format: Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGBA16", "RGB565"] = "RGBA",
         buffer_type: Literal["auto", "numpy", "ctypes"] = "auto",
     ):
         """The DispmanX Class
@@ -128,6 +129,7 @@ class DispmanX:
                 * An [int][] device number of a specific display
                 * A [Display][dispmanx.dispmanx.Display] object, for example,
                     returned by [list_displays()][dispmanx.DispmanX.list_displays])
+
             pixel_format: Pixel format for the object. Choices:
 
                 * `'RGB'` &mdash; 24-bit red, green, and blue
@@ -135,8 +137,12 @@ class DispmanX:
                 * `'RGBA'` &mdash; 32-bit red, green, blue, and alpha
                 * `'RGBX'` &mdash; 32-bit red, green, blue and an unused (`X`) byte
                 * `'XRGB'` &mdash; 32-bit an unused (`X`) byte red, green, and blue
-                * `'RGB565'` &mdash; 16-bit red, green, blue packed in RGB565 format
-                    (represented as unsigned 16-bit integers when using [NumPy][numpy])
+                * `'RGB16'` &mdash; 16-bit red, green, blue and alpha packed as
+                    4 bits per channel (represented as unsigned 16-bit integers
+                    when using [NumPy][numpy])
+                * `'RGB565'` &mdash; 16-bit red, green, blue packed as follows:
+                    5 bits red, 6 bits green, 5 bits green (represented as unsigned
+                    16-bit integers when using [NumPy][numpy])
 
             buffer_type: Type of buffer to write to the display from. Choices:
 
@@ -251,7 +257,7 @@ class DispmanX:
 
     @property  # type: ignore
     @only_if_not_destroyed
-    def pixel_format(self) -> Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGB565"]:
+    def pixel_format(self) -> Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGBA16", "RGB565"]:
         return self._pixel_format.format
 
     def _create_video_resource_handle(self) -> None:
