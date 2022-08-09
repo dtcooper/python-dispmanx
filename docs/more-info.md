@@ -77,7 +77,11 @@ For example using the Python 3.9 container with a script called `test.py` in
 your current directory run this at the command line,
 
 ```bash
-docker run -it -v "./test.py:/test.py" --device /dev/vchiq:/dev/vchiq bash
+docker run -it \
+    -v "./test.py:/test.py" \
+    --device /dev/vchiq:/dev/vchiq \
+    dtcooper/raspberrypi-os:python3.9 \
+  bash
 # Now in the container
 pip install dispmanx[numpy]
 python /test.py

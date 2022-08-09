@@ -1,14 +1,14 @@
 from random import uniform
 import time
-from cairo import ImageSurface, FORMAT_RGB24, Context
+from cairo import ImageSurface, FORMAT_RGB16_565, Context
 from dispmanx import DispmanX
 
 def random_color():
     return tuple(uniform(0, 1) for _ in range(3))
 
-display = DispmanX(pixel_format="RGBX")
+display = DispmanX(pixel_format="RGB565")
 width, height = display.size
-surface = ImageSurface.create_for_data(display.buffer, FORMAT_RGB24, width, height)
+surface = ImageSurface.create_for_data(display.buffer, FORMAT_RGB16_565, width, height)
 context = Context(surface)
 
 for _ in range(20):
