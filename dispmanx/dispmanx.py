@@ -81,7 +81,7 @@ PIXEL_FORMATS = {
         4,
         bcm_host.VC_IMAGE_RGBA32,
     ),
-    "RGBX": PixelFormat("RGBX", 4, bcm_host.VC_IMAGE_TF_RGBX32),
+    "RGBX": PixelFormat("RGBX", 4, bcm_host.VC_IMAGE_RGBX8888),
 }
 
 
