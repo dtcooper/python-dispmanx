@@ -541,7 +541,7 @@ as described below.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">DispmanX</span><span class="p">(</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">display</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Display</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">pixel_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;RGBA&quot;</span><span class="p">,</span> <span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="s2">&quot;ARGB&quot;</span><span class="p">,</span> <span class="s2">&quot;RGBX&quot;</span><span class="p">,</span> <span class="s2">&quot;RGB565&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RGBA&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">pixel_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="s2">&quot;ARGB&quot;</span><span class="p">,</span> <span class="s2">&quot;RGBA&quot;</span><span class="p">,</span> <span class="s2">&quot;RGBX&quot;</span><span class="p">,</span> <span class="s2">&quot;XRGB&quot;</span><span class="p">,</span> <span class="s2">&quot;RGB565&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RGBA&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">buffer_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="s2">&quot;ctypes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
 </code></pre></div>
@@ -600,14 +600,15 @@ Raspberry Pi OS Lite's terminal is <code>-127</code>, while omxplayer is
         <tr>
           <td><code>pixel_format</code></td>
           <td>
-                <code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[&#39;RGBA&#39;, &#39;RGB&#39;, &#39;ARGB&#39;, &#39;RGBX&#39;, &#39;RGB565&#39;]</code>
+                <code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[&#39;RGB&#39;, &#39;ARGB&#39;, &#39;RGBA&#39;, &#39;RGBX&#39;, &#39;XRGB&#39;, &#39;RGB565&#39;]</code>
           </td>
           <td><p>Pixel format for the object. Choices:</p>
 <ul>
-<li><code>'RGBA'</code> &mdash; 32-bit red, green, blue, and alpha</li>
 <li><code>'RGB'</code> &mdash; 24-bit red, green, and blue</li>
 <li><code>'ARGB'</code> &mdash; 32-bit alpha, red, green, and blue</li>
+<li><code>'RGBA'</code> &mdash; 32-bit red, green, blue, and alpha</li>
 <li><code>'RGBX'</code> &mdash; 32-bit red, green, blue and an unused (<code>X</code>) byte</li>
+<li><code>'XRGB'</code> &mdash; 32-bit an unused (<code>X</code>) byte red, green, and blue</li>
 <li><code>'RGB565'</code> &mdash; 16-bit red, green, blue packed in RGB565 format
     (represented as unsigned 16-bit integers when using <a class="autorefs autorefs-external" href="https://docs.scipy.org/doc/numpy/reference/index.html#module-numpy">NumPy</a>)</li>
 </ul></td>
