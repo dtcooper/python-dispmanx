@@ -512,8 +512,8 @@
 
 
 <h1 id="additional-information">Additional Information<a class="headerlink" href="#additional-information" title="Permanent link">←</a></h1>
-<p>Below is more information about the DispmanX for Python library, including
-what's supported, how to install the necessary library on your Pi, and some
+<p>Below is more information about the Python DispmanX library, including
+what's supported, how to install the necessary requirements (<code>bcm_host.so</code>), and some
 acknowledgements.</p>
 <h2 id="python-os-and-device-version-support">Python, OS and Device Version Support<a class="headerlink" href="#python-os-and-device-version-support" title="Permanent link">←</a></h2>
 <dl>
@@ -523,10 +523,10 @@ the time of this writing, that's based on
 <a href="https://www.debian.org/releases/bullseye/">Debian Bullseye (11.x)</a>.</dd>
 <dt>Python Version</dt>
 <dd>The minimum version of Python supported is 3.9. That's the default version
-installed on <a href="https://www.raspberrypi.com/software/">Raspberry Pi OS</a>.</dd>
+installed on the latest <a href="https://www.raspberrypi.com/software/">Raspberry Pi OS</a> (Bullseye).</dd>
 <dt>Raspberry Pi Versions</dt>
 <dd>
-<p>This library should work on any versions of the Pi, but I've specifically
+<p>This library <em>should</em> work on any version of the Pi, but I've specifically
 tested,</p>
 <ol>
 <li>Raspberry Pi 4 B</li>
@@ -537,9 +537,9 @@ tested,</p>
 </ol>
 </dd>
 </dl>
-<p>If you're using an older version Python, Raspberry Pi OS, and/or a different OS
-entirely, you can always use <a href="https://www.docker.com/">Docker</a> on any supported version of the Pi. See the
-section on <a class="autorefs autorefs-internal" href="#docker-and-compose">Docker and Compose</a> below.</p>
+<p>If you're using an older version of Python, Raspberry Pi OS, and/or a different OS
+entirely, you can always use <a href="https://www.docker.com/">Docker</a> on your Pi. See the section on
+<a class="autorefs autorefs-internal" href="#docker-and-compose">Docker and Compose</a> below.</p>
 <h2 id="ctypes-and-bcm_hostso"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a> and <code>bcm_host.so</code><a class="headerlink" href="#ctypes-and-bcm_hostso" title="Permanent link">←</a></h2>
 <p>While Python DispmanX is written completely in Python, it uses Python's included
 <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a> library to perform "foreign function calls" to <code>bcm_host.so</code>. In
@@ -585,7 +585,7 @@ you'll need to install pip yourself. Three images are listed in the table below.
 </tr>
 </tbody>
 </table>
-<p>For example using the Python 3.9 container with a script called <code>test.py</code> in
+<p>For example to use the Python 3.9 container with a script called <code>test.py</code> in
 your current directory run this at the command line,</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker run -it <span class="se">\</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    -v <span class="s2">&quot;./test.py:/test.py&quot;</span> <span class="se">\</span>
@@ -607,10 +607,10 @@ file,</p>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/vchiq:/dev/vchiq</span><span class="w"></span>
 </code></pre></div>
 <h2 id="acknowledgements">Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permanent link">←</a></h2>
-<p>Several projects were used as reference in development of Python DispmanX. Some
+<p>Several projects were used as reference in the development of Python DispmanX. Some
 of the main ones are described below.</p>
 <h3 id="pydispmanx"><a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a><a class="headerlink" href="#pydispmanx" title="Permanent link">←</a></h3>
-<p>First and foremost, let me acknowledge the work <a href="https://twitter.com/eclispe">Tim Clark</a> put into
+<p>First and foremost, let me acknowledge the great work <a href="https://twitter.com/eclispe">Tim Clark</a> put into
 <a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a>.</p>
 <p><a href="https://github.com/eclispe/pydispmanx">PyDispmanx</a> is another Python library available that functions somewhat
 similarly. Honestly, it's great and I would recommend it! I owe a debt of
