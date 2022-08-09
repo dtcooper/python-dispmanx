@@ -148,9 +148,23 @@ from Python.
 The [picamera] Python library interfaces with the
 [Pi's Camera Module][pi-camera-module]. Its source code contains several parts
 that interface with the Pi's APIs including the DispmanX layer contained in the
-`bcm_host.so` shared library. In particular [picamera]'s source in its source
-file [`bcm_host.py`][bcm-host-py] were used as inspiration for how to interact
-with DispmanX via [ctypes][].
+`bcm_host.so` shared library. In particular [picamera]'s source file
+[`bcm_host.py`][bcm-host-py] was used as inspiration for how to interact with
+DispmanX via [ctypes][].
+
+## Project Roadmap
+
+- [x] Publish package to PyPI
+- [x] Add API docs using MkDocs, Material for MkDocs, mkdocstrings
+- [x] Call destroy functions in bcm_host.h
+- [x] Support additional pixel types
+- [ ] Allow multiple layers, and different displays
+- [ ] Support custom dimensions and offsets – API supports it, but requires weird
+    multiples of 16 or 32, [as documented here][picamera-overlay-docs]. This
+    requires testing, because anecdotally it seems to work with smaller multiples.
+- [ ] Tests run over SSH onto my home pi &mdash; GitHub actions won't work,
+    since they don't support DispmanX APIs
+
 
 [andrew duncan]: https://github.com/andrewfrommelbourne
 [bcm-host-py]: https://github.com/waveform80/picamera/blob/master/picamera/bcm_host.py
@@ -160,6 +174,7 @@ with DispmanX via [ctypes][].
 [pi-base-containers]: https://github.com/dtcooper/raspberrypi-os-docker
 [pi-camera-module]: https://projects.raspberrypi.org/en/projects/getting-started-with-picamera
 [pi-os]: https://www.raspberrypi.com/software/
+[picamera-overlay-docs]: https://picamera.readthedocs.io/en/release-1.13/api_renderers.html#picamera.PiOverlayRenderer
 [picamera]: https://picamera.readthedocs.io/
 [pydispmanx]: https://github.com/eclispe/pydispmanx
 [pypi]: https://pypi.org/

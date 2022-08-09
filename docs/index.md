@@ -118,6 +118,7 @@ menus, "channels," and subtitles[^3].
     [don't seem to be working on the Raspberry Pi 4B][omxplayer-subtitles-bug].
     And besides, I wanted to render custom subtitles.
 
+
 [dispmanx-pypi]: https://pypi.org/project/dispmanx/
 [omxplayer-subtitles-bug]: https://github.com/popcornmix/omxplayer/issues/736
 [omxplayer]: https://github.com/popcornmix/omxplayer

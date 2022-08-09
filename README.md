@@ -15,19 +15,35 @@ Install with pip,
 pip install dispmanx
 ```
 
-Then see the [Quickstart section in the docs][quickstart].
+Then try out this sample program using [pygame](https://www.pygame.org/docs/),
 
-## TODO List
+```python
+from random import randint
+import pygame
+from dispmanx import DispmanX
 
-- [x] Publish package to PyPI
-- [x] Add API docs using MkDocs, Material for MkDocs, mkdocstrings
-- [x] Call destroy functions in bcm_host.h
-- [x] Support additional pixel types
-- [ ] Allow multiple layers, and different displays
-- [ ] Support custom dimensions and offsets – API supports it, but requires weird
-    multiples of 16 or 32, [as documented here][picamera-overlay-docs]. This
-    requires testing, because anecdotally it seems to work with smaller multiples.
-- [ ] Tests run over SSH onto my home pi (github runners won't do)
+def random_color_with_alpha():
+    return tuple(randint(0, 0xFF) for _ in range(3)) + (randint(0x44, 0xFF),)
 
-[picamera-overlay-docs]: https://picamera.readthedocs.io/en/release-1.13/api_renderers.html#picamera.PiOverlayRenderer
-[quickstart]: https://dtcooper.github.io/python-dispmanx/#quickstart
+display = DispmanX(pixel_format="RGBA")
+surface = pygame.image.frombuffer(display.buffer, display.size, display.pixel_format)
+clock = pygame.time.Clock()
+
+for _ in range(20):
+    surface.fill(random_color_with_alpha())
+    display.update()
+    clock.tick(2)
+
+```
+
+Next stop: [the project's documentation](https://dtcooper.github.io/python-dispmanx/).
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT)
+&mdash; see the [LICENSE](https://github.com/dtcooper/python-dispmanx/blob/main/LICENSE)
+file for details.
+
+## Final Note
+
+**_...and remember kids, have fun!_**
