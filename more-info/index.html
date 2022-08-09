@@ -467,6 +467,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#project-roadmap" class="md-nav__link">
+    Project Roadmap
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -637,9 +644,22 @@ from Python.</p>
 <p>The <a href="https://picamera.readthedocs.io/">picamera</a> Python library interfaces with the
 <a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera">Pi's Camera Module</a>. Its source code contains several parts
 that interface with the Pi's APIs including the DispmanX layer contained in the
-<code>bcm_host.so</code> shared library. In particular <a href="https://picamera.readthedocs.io/">picamera</a>'s source in its source
-file <a href="https://github.com/waveform80/picamera/blob/master/picamera/bcm_host.py"><code>bcm_host.py</code></a> were used as inspiration for how to interact
-with DispmanX via <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a>.</p>
+<code>bcm_host.so</code> shared library. In particular <a href="https://picamera.readthedocs.io/">picamera</a>'s source file
+<a href="https://github.com/waveform80/picamera/blob/master/picamera/bcm_host.py"><code>bcm_host.py</code></a> was used as inspiration for how to interact with
+DispmanX via <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a>.</p>
+<h2 id="project-roadmap">Project Roadmap<a class="headerlink" href="#project-roadmap" title="Permanent link">←</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Publish package to PyPI</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add API docs using MkDocs, Material for MkDocs, mkdocstrings</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Call destroy functions in bcm_host.h</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Support additional pixel types</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Allow multiple layers, and different displays</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Support custom dimensions and offsets – API supports it, but requires weird
+    multiples of 16 or 32, <a href="https://picamera.readthedocs.io/en/release-1.13/api_renderers.html#picamera.PiOverlayRenderer">as documented here</a>. This
+    requires testing, because anecdotally it seems to work with smaller multiples.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Tests run over SSH onto my home pi &mdash; GitHub actions won't work,
+    since they don't support DispmanX APIs</li>
+</ul>
 
               
             </article>
