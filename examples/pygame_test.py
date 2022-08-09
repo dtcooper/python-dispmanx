@@ -1,7 +1,6 @@
 from random import randint
 import pygame
 from dispmanx import DispmanX
-import sys
 
 def random_color_with_alpha():
     return tuple(randint(0, 0xFF) for _ in range(3)) + (randint(0x44, 0xFF),)
