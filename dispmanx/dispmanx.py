@@ -1,4 +1,3 @@
-import atexit
 from contextlib import contextmanager
 import ctypes
 from functools import wraps
@@ -187,7 +186,7 @@ class DispmanX:
         pixel_format_obj = PIXEL_FORMATS.get(pixel_format)
 
         if pixel_format_obj is None:
-            raise DispmanXError(f"Invalid pixel format: {format}")
+            raise DispmanXError(f"Invalid pixel format: {pixel_format}")
         self._pixel_format = pixel_format_obj
 
         if buffer_type not in ("numpy", "ctypes", "auto"):
@@ -237,7 +236,6 @@ class DispmanX:
 
         self._create_video_resource_handle()
         self._create_surface_element()
-        atexit.register(self.destroy)
 
     def __repr__(self):
         if self._destroyed:
@@ -448,5 +446,4 @@ class DispmanX:
                 raise DispmanXRuntimeError("Error destroying image resource")
 
             self._buffer = None
-            atexit.unregister(self.destroy)
             self._destroyed = True
