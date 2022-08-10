@@ -545,6 +545,24 @@ NumPy"</em> content tab above.</p>
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
+<details class="failure">
+<summary>If you see a <code>DispmanXRuntimeError: No displays found!</code> exception</summary>
+<p>If you run into the following  <code>DispmanXRuntimeError</code> running the code
+above,</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dispmanx</span> <span class="kn">import</span> <span class="n">DispmanX</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">display</span> <span class="o">=</span> <span class="n">DispmanX</span><span class="p">()</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="gt">Traceback (most recent call last):</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="err">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">File &quot;/home/david/python-dispmanx/dispmanx/dispmanx.py&quot;, line 205, in __init__</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="go">    self._display = self.get_default_display()</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">File &quot;/home/david/python-dispmanx/dispmanx/dispmanx.py&quot;, line 421, in get_default_display</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="go">    raise DispmanXRuntimeError(&quot;No displays found! (Are you using the vc4-kms-v3d driver?)&quot;)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="go">dispmanx.exceptions.DispmanXRuntimeError: No displays found! (Are you using the vc4-kms-v3d driver?)</span>
+</code></pre></div>
+<p>Then you'll need to follow
+<a class="autorefs autorefs-internal" href="more-info/#fixing-no-displays-found-exception">the instructions here</a> to address the
+issue.</p>
+</details>
 <p>More examples are available on the <a href="recipes/">recipes</a> page.</p>
 <h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">←</a></h2>
 <p>You may be asking why this library, when you could just <a href="https://www.pygame.org/docs/">pygame</a>? Here are some

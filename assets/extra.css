@@ -5,7 +5,8 @@
 }
 
 * {
-  font-variant-ligatures: none;
+  /* Make sure "fl" and "fi" don't get warped in code examples */
+  font-feature-settings: "liga" 0;
 }
 
 .doc-object-name, .doc-class-name {
