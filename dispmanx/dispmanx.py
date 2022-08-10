@@ -57,6 +57,7 @@ class Display(NamedTuple):
 
 
 class PixelFormat(NamedTuple):
+    # Internal object, not publicly exposed
     format: Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGBA16", "RGB565"]
     byte_width: int
     vc_image_type: int
@@ -86,7 +87,6 @@ PIXEL_FORMATS = {
 
 class DispmanX:
     _buffer: Any
-    _buffer_type: Literal["numpy", "ctypes"]
     _display_handle: int
     _display: Display
     _has_initialized: ClassVar[bool] = False
@@ -170,15 +170,17 @@ class DispmanX:
                 `buffer_type` argument.
             buffer_type str: Whether the buffer is a [NumPy array][numpy.array]
                 or a [ctypes][] [Array][ctypes.Array]. (Either `"numpy"` or
-                `"ctypes"`)
+                `"ctypes"`.)
             display Display: The display for which this object is attached to
-            pixel_format str: The pixel format for this object.
-            size Size: The dimensions of the current display
-            width int: The width of the current display
-            height int: The height of the current display
-            layer int: The layer of this object
-            destroyed bool: Whether or not this object has been destroyed (or
-                uninitialized)
+            pixel_format str: The pixel format for this object. (One of `"RGB"`,
+                `"ARGB"`, `"RGBA"`, `"RGBX"`, `"XRGB"`, `"RGBA16"` or `"RGB565"`.)
+            size Size: The [Size][dispmanx.dispmanx.Size] object representing
+                the dimensions of the current display.
+            width int: The width of the current display.
+            height int: The height of the current display.
+            layer int: The layer of this object.
+            destroyed bool: Whether or not this object has been destroyed,
+                is currently unusable, and no longer is available to display.
         """
         self._destroyed = False
         self._layer = layer
@@ -194,7 +196,6 @@ class DispmanX:
             raise DispmanXError("numpy buffer type requested, but numpy not found!")
         elif buffer_type == "auto":
             buffer_type = "numpy" if HAVE_NUMPY else "ctypes"
-        self._buffer_type = buffer_type
 
         device_id = display.device_id if isinstance(display, Display) else display
 
@@ -242,11 +243,11 @@ class DispmanX:
         if self._destroyed:
             return f"<{self.__class__.__name__} (destroyed)>"
         else:
-            bufsize = self._buffer.nbytes if self._buffer_type == "numpy" else len(self._buffer)
+            bufsize = len(self._buffer) if isinstance(self._buffer, ctypes.Array) else self._buffer.nbytes
             return (
                 f"<{self.__class__.__name__} {self._pixel_format.format} on"
                 f" {self._display.name} ({self._display.size.width}x{self._display.size.height}),"
-                f" layer {self._layer}, {self._buffer_type} buffer of {bufsize} bytes>"
+                f" layer {self._layer}, {self.buffer_type} buffer of {bufsize} bytes>"
             )
 
     def __del__(self):
@@ -285,7 +286,7 @@ class DispmanX:
     @property  # type: ignore
     @only_if_not_destroyed
     def buffer_type(self) -> Literal["numpy", "ctypes"]:
-        return self._buffer_type
+        return "ctypes" if isinstance(self._buffer, ctypes.Array) else "numpy"
 
     @property  # type: ignore
     @only_if_not_destroyed
@@ -343,10 +344,10 @@ class DispmanX:
             DispmanXRuntimeError: Raises if there's an error writing to the
                 video memory
         """
-        if self._buffer_type == "numpy":
-            buffer_ref = numpy.ctypeslib.as_ctypes(self._buffer)
-        else:
+        if isinstance(self._buffer, ctypes.Array):
             buffer_ref = ctypes.byref(self._buffer)
+        else:
+            buffer_ref = numpy.ctypeslib.as_ctypes(self._buffer)
 
         if (
             bcm_host.vc_dispmanx_resource_write_data(
