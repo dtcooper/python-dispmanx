@@ -72,6 +72,27 @@ Then try this out,
 --8<-- "pygame_test.py"
 ```
 
+??? failure "If you see a `DispmanXRuntimeError: No displays found!` exception"
+    If you run into the following  `DispmanXRuntimeError` running the code
+    above,
+
+    ```pycon
+    >>> from dispmanx import DispmanX
+    >>> display = DispmanX()
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    File "/home/david/python-dispmanx/dispmanx/dispmanx.py", line 205, in __init__
+        self._display = self.get_default_display()
+    File "/home/david/python-dispmanx/dispmanx/dispmanx.py", line 421, in get_default_display
+        raise DispmanXRuntimeError("No displays found! (Are you using the vc4-kms-v3d driver?)")
+    dispmanx.exceptions.DispmanXRuntimeError: No displays found! (Are you using the vc4-kms-v3d driver?)
+    ```
+
+    Then you'll need to follow
+    [the instructions here][fixing-no-displays-found-exception] to address the
+    issue.
+
+
 More examples are available on the [recipes](recipes.md) page.
 
 ## Use Cases

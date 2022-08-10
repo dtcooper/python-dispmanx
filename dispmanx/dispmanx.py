@@ -85,21 +85,23 @@ PIXEL_FORMATS = {
 
 
 class DispmanX:
+    _bcm_initialized: ClassVar[bool] = False
     _buffer: Any
     _display_handle: int
     _display: Display
-    _has_initialized: ClassVar[bool] = False
+    _destroyed: bool
     _layer: int
+    _needs_destroying: int
     _pixel_format: PixelFormat
     _surface_element_handle: int
     _video_resource_handle: int
 
     @classmethod
     def _bcm_host_init(cls) -> None:
-        if not cls._has_initialized:
+        if not cls._bcm_initialized:
             logger.debug("Initialized bcm_host")
             bcm_host.bcm_host_init()
-            cls._has_initialized = True
+            cls._bcm_initialized = True
 
     def __init__(
         self,
@@ -181,7 +183,7 @@ class DispmanX:
             destroyed bool: Whether or not this object has been destroyed,
                 is currently unusable, and no longer is available to display.
         """
-        self._destroyed = False
+        self._destroyed = self._needs_destroying = False
         self._layer = layer
         pixel_format_obj = PIXEL_FORMATS.get(pixel_format)
 
@@ -236,6 +238,7 @@ class DispmanX:
 
         self._create_video_resource_handle()
         self._create_surface_element()
+        self._needs_destroying = True
 
     def __repr__(self):
         if self._destroyed:
@@ -418,7 +421,7 @@ class DispmanX:
         """
         displays = cls.list_displays()
         if len(displays) == 0:
-            raise DispmanXRuntimeError("No displays found!")
+            raise DispmanXRuntimeError("No displays found! (Are you using the vc4-kms-v3d driver?)")
         return displays[0]
 
     @classmethod
@@ -433,11 +436,13 @@ class DispmanX:
     def destroy(self) -> None:
         """Destroy this DispmanX object
 
+        If the object is _already_ destroyed, the operation will do nothing.
+
         Raises:
             DispmanXRuntimeError: Raised if there's an error destroying any of
                 the underlying resources for the object
         """
-        if not self._destroyed:
+        if self._needs_destroying:
             with self._start_and_submit_update() as update_handle:
                 if bcm_host.vc_dispmanx_element_remove(update_handle, self._surface_element_handle) != 0:
                     raise DispmanXRuntimeError("Couldn't destroy surface element")
@@ -446,4 +451,5 @@ class DispmanX:
                 raise DispmanXRuntimeError("Error destroying image resource")
 
             self._buffer = None
+            self._needs_destroying = False
             self._destroyed = True

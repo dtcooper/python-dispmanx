@@ -33,6 +33,44 @@ If you're using an older version of Python, Raspberry Pi OS, and/or a different 
 entirely, you can always use [Docker] on your Pi. See the section on
 [Docker and Compose][docker-and-compose] below.
 
+## Fixing `No displays found!` Exception
+
+If you have display(s) hooked up to your Raspberry Pi, but you run into an error
+that looks something like this,
+
+```pycon
+>>> from dispmanx import DispmanX
+>>> display = DispmanX()
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+File "/home/david/python-dispmanx/dispmanx/dispmanx.py", line 205, in __init__
+    self._display = self.get_default_display()
+File "/home/david/python-dispmanx/dispmanx/dispmanx.py", line 421, in get_default_display
+    raise DispmanXRuntimeError("No displays found! (Are you using the vc4-kms-v3d driver?)")
+dispmanx.exceptions.DispmanXRuntimeError: No displays found! (Are you using the vc4-kms-v3d driver?)
+```
+
+Then your Pi may be running in so-called "Full KMS" video mode. In order for
+your Pi to run its video layer on top of DispmanX, you'll need to change a
+configuration value in `/boot/config.txt` to switch to "Fake FMS" mode. _(Don't
+let the word "fake" scare you.)_
+
+```text title="/boot/config.txt" hl_lines="2"
+# Enable DRM VC4 V3D driver
+dtoverlay=vc4-kms-v3d <- change to: dtoverlay=vc4-fkms-v3d
+max_framebuffers=2
+```
+
+Afterwards, reboot. Alternatively, you can follow these commands to perform the
+operation manually,
+
+```bash
+# Modify the video driver: vc4-kms-v3d -> vc4-fkms-v3d
+sudo sed -i 's/^dtoverlay=vc4-kms-v3d/dtoverlay=vc4-fkms-v3d/' /boot/config.txt
+sudo reboot  # Reboot your Pi
+```
+_Et voilà, that should fix that!_
+
 
 ## [ctypes][] and `bcm_host.so`
 
