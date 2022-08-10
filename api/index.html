@@ -689,6 +689,15 @@ of <a class="autorefs autorefs-external" href="https://docs.python.org/3/library
 <code>buffer_type</code> argument.</p></td>
         </tr>
         <tr>
+          <td><code>buffer_type</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td><p>Whether the buffer is a <a class="autorefs autorefs-external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array">NumPy array</a>
+or a <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#module-ctypes">ctypes</a> <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/ctypes.html#ctypes.Array">Array</a>. (Either <code>"numpy"</code> or
+<code>"ctypes"</code>)</p></td>
+        </tr>
+        <tr>
           <td><code>display</code></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="dispmanx.dispmanx.Display" href="#dispmanx.dispmanx.Display">Display</a></code>
@@ -722,6 +731,21 @@ of <a class="autorefs autorefs-external" href="https://docs.python.org/3/library
                 <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
           </td>
           <td><p>The height of the current display</p></td>
+        </tr>
+        <tr>
+          <td><code>layer</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+          </td>
+          <td><p>The layer of this object</p></td>
+        </tr>
+        <tr>
+          <td><code>destroyed</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+          </td>
+          <td><p>Whether or not this object has been destroyed (or
+uninitialized)</p></td>
         </tr>
     </tbody>
   </table>
