@@ -1,3 +1,4 @@
+import atexit
 from contextlib import contextmanager
 import ctypes
 from functools import wraps
@@ -85,6 +86,7 @@ PIXEL_FORMATS = {
 
 class DispmanX:
     _buffer: Any
+    _buffer_type: Literal["numpy", "ctypes"]
     _display_handle: int
     _display: Display
     _has_initialized: ClassVar[bool] = False
@@ -166,11 +168,17 @@ class DispmanX:
                 a [NumPy array][numpy.array] or [ctypes][] [Array][ctypes.Array]
                 of [c_char][ctypes.c_char] depending on the value of the
                 `buffer_type` argument.
+            buffer_type str: Whether the buffer is a [NumPy array][numpy.array]
+                or a [ctypes][] [Array][ctypes.Array]. (Either `"numpy"` or
+                `"ctypes"`)
             display Display: The display for which this object is attached to
             pixel_format str: The pixel format for this object.
             size Size: The dimensions of the current display
             width int: The width of the current display
             height int: The height of the current display
+            layer int: The layer of this object
+            destroyed bool: Whether or not this object has been destroyed (or
+                uninitialized)
         """
         self._destroyed = False
         self._layer = layer
@@ -186,6 +194,7 @@ class DispmanX:
             raise DispmanXError("numpy buffer type requested, but numpy not found!")
         elif buffer_type == "auto":
             buffer_type = "numpy" if HAVE_NUMPY else "ctypes"
+        self._buffer_type = buffer_type
 
         device_id = display.device_id if isinstance(display, Display) else display
 
@@ -227,6 +236,18 @@ class DispmanX:
 
         self._create_video_resource_handle()
         self._create_surface_element()
+        atexit.register(self.destroy)
+
+    def __repr__(self):
+        if self._destroyed:
+            return f"<{self.__class__.__name__} (destroyed)>"
+        else:
+            bufsize = self._buffer.nbytes if self._buffer_type == "numpy" else len(self._buffer)
+            return (
+                f"<{self.__class__.__name__} {self._pixel_format.format} on"
+                f" {self._display.name} ({self._display.size.width}x{self._display.size.height}),"
+                f" layer {self._layer}, {self._buffer_type} buffer of {bufsize} bytes>"
+            )
 
     def __del__(self):
         self.destroy()
@@ -261,6 +282,20 @@ class DispmanX:
     def pixel_format(self) -> Literal["RGB", "ARGB", "RGBA", "RGBX", "XRGB", "RGBA16", "RGB565"]:
         return self._pixel_format.format
 
+    @property  # type: ignore
+    @only_if_not_destroyed
+    def buffer_type(self) -> Literal["numpy", "ctypes"]:
+        return self._buffer_type
+
+    @property  # type: ignore
+    @only_if_not_destroyed
+    def layer(self) -> int:
+        return self._layer
+
+    @property
+    def destroyed(self) -> bool:
+        return self._destroyed
+
     def _create_video_resource_handle(self) -> None:
         self._bcm_host_init()
 
@@ -278,9 +313,9 @@ class DispmanX:
         logger.debug(f"Created video resource handle: {handle}")
 
     def _create_surface_element(self) -> None:
-        src_width, src_height = self.display.size.width << 16, self.display.size.height << 16
+        src_width, src_height = self._display.size.width << 16, self._display.size.height << 16
         src_rect = bcm_host.VC_RECT_T(width=src_width, height=src_height, x=0, y=0)
-        self._dest_rect = bcm_host.VC_RECT_T(width=self.display.size.width, height=self.display.size.height, x=0, y=0)
+        self._dest_rect = bcm_host.VC_RECT_T(width=self._display.size.width, height=self._display.size.height, x=0, y=0)
         alpha = bcm_host.VC_DISPMANX_ALPHA_T(flags=bcm_host.DISPMANX_FLAGS_ALPHA_FROM_SOURCE, opacity=255, mask=0)
 
         with self._start_and_submit_update() as update_handle:
@@ -308,18 +343,17 @@ class DispmanX:
             DispmanXRuntimeError: Raises if there's an error writing to the
                 video memory
         """
-
-        if HAVE_NUMPY:
-            buffer = numpy.ctypeslib.as_ctypes(self._buffer)
+        if self._buffer_type == "numpy":
+            buffer_ref = numpy.ctypeslib.as_ctypes(self._buffer)
         else:
-            buffer = ctypes.byref(self._buffer)
+            buffer_ref = ctypes.byref(self._buffer)
 
         if (
             bcm_host.vc_dispmanx_resource_write_data(
                 self._video_resource_handle,
                 self._pixel_format.vc_image_type,
-                self.display.size.width * self._pixel_format.byte_width,
-                buffer,
+                self._display.size.width * self._pixel_format.byte_width,
+                buffer_ref,
                 ctypes.byref(self._dest_rect),
             )
             != 0
@@ -412,4 +446,6 @@ class DispmanX:
             if bcm_host.vc_dispmanx_resource_delete(self._video_resource_handle) != 0:
                 raise DispmanXRuntimeError("Error destroying image resource")
 
+            self._buffer = None
+            atexit.unregister(self.destroy)
             self._destroyed = True
