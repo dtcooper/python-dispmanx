@@ -1,7 +1,6 @@
 from contextlib import contextmanager
 import ctypes
 from functools import wraps
-import logging
 from typing import Any, ClassVar, Generator, Literal, NamedTuple, Union
 
 
@@ -15,9 +14,6 @@ else:
 
 from . import bcm_host
 from .exceptions import DispmanXError, DispmanXRuntimeError
-
-
-logger = logging.getLogger("dispmanx")
 
 
 class Size(NamedTuple):
@@ -99,7 +95,6 @@ class DispmanX:
     @classmethod
     def _bcm_host_init(cls) -> None:
         if not cls._bcm_initialized:
-            logger.debug("Initialized bcm_host")
             bcm_host.bcm_host_init()
             cls._bcm_initialized = True
 
@@ -215,15 +210,9 @@ class DispmanX:
             else:
                 raise DispmanXError(f"No display with device ID #{device_id} found!")
 
-        logger.debug(
-            f"Using device ID #{self._display.device_id} with resolution"
-            f" {self._display.size.width}x{self._display.size.height}"
-        )
-
         handle = bcm_host.vc_dispmanx_display_open(self._display.device_id)
         if handle == 0:
             raise DispmanXRuntimeError(f"Error opening device ID #{self._display.device_id}")
-        logger.debug(f"Got display handle: {handle}")
         self._display_handle = handle
 
         buffer_size = self._display.size.width * self._display.size.height * self._pixel_format.byte_width
@@ -234,7 +223,6 @@ class DispmanX:
             self._buffer = numpy.zeros(shape=array_shape, dtype=dtype)
         else:
             self._buffer = ctypes.create_string_buffer(buffer_size)
-        logger.debug(f"Allocated buffer of size {buffer_size} bytes")
 
         self._create_video_resource_handle()
         self._create_surface_element()
@@ -312,7 +300,6 @@ class DispmanX:
             raise DispmanXRuntimeError("Error creating image resource")
 
         self._video_resource_handle = handle
-        logger.debug(f"Created video resource handle: {handle}")
 
     def _create_surface_element(self) -> None:
         src_width, src_height = self._display.size.width << 16, self._display.size.height << 16
@@ -335,7 +322,6 @@ class DispmanX:
             )
             if self._surface_element_handle == 0:
                 raise DispmanXRuntimeError("Couldn't create surface element")
-            logger.debug(f"Got surface element handle: {self._surface_element_handle}")
 
     @only_if_not_destroyed
     def update(self) -> None:
