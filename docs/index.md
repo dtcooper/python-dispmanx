@@ -1,24 +1,24 @@
 ---
 title: Intro
-nav_title: fuck
 ---
 
 # Welcome to Python DispmanX
 
-!!! danger "A Word of Caution"
-    Currently, **Python DispmanX is under active development**. This
-    documentation may not reflect the latest changes, or may include changes
-    that are not yet available on [PyPI]. _Beware!_
-
-    Until the API stabilizes, it's recommended that you install the latest
-    version from source, described below in the [installation][installation]
-    section.
-
 Hello and welcome! Here's the documentation for Python DispmanX, a pure
 Python[^1] library for interacting with the Raspberry Pi's low-level video API.
 My hope is that you find it useful for creating all sorts of different apps,
-widgets, and graphical overlays for your Pi. I hope you'll _have as much fun
+widgets, and graphical overlays for your Pi. _I hope you'll have as much fun
 using it as I did writing it!_
+
+!!! warning "A Word of Caution"
+    Currently, **Python DispmanX is under development**.
+
+    While the API has _mostly_ stabilized, it's recommended that you install the
+    latest version from source, described below in the [installation][installation]
+    section.
+
+    This documentation may not reflect the latest changes, or may include changes
+    that are not yet available on [PyPI]. _Beware!_
 
 ## Quickstart
 
