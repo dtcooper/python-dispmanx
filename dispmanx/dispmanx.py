@@ -23,7 +23,7 @@ class Size(NamedTuple):
 
     Not instantiated directly.
 
-    Attribute:
+    Attributes:
         width int: The width component
         height int: The height component
     """
