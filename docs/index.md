@@ -10,6 +10,7 @@ My hope is that you find it useful for creating all sorts of different apps,
 widgets, and graphical overlays for your Pi. _I hope you'll have as much fun
 using it as I did writing it!_
 
+<!-- I guess the API is stable now?
 !!! warning "A Word of Caution"
     Currently, **Python DispmanX is under development**.
 
@@ -19,6 +20,7 @@ using it as I did writing it!_
 
     This documentation may not reflect the latest changes, or may include changes
     that are not yet available on [PyPI]. _Beware!_
+-->
 
 ## Quickstart
 
