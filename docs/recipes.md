@@ -18,7 +18,7 @@ pip install pygame
 
 Then run this program,
 
-```python title="pillow_test.py"
+```python title="pygame_test.py"
 --8<-- "pygame_test.py"
 ```
 
